@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "About | Gyun's Blog",
-  description: "개발자 임현성을 소개합니다.",
+  description: "개발자 박문균을 소개합니다.",
 };
 
 const introduction = {

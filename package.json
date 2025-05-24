@@ -11,6 +11,8 @@
   "dependencies": {
     "@tanstack/react-query": "^5.76.2",
     "@tanstack/react-query-devtools": "^5.76.2",
+    "@uiw/react-md-editor": "^4.0.7",
+    "firebase": "^11.8.1",
     "next": "15.1.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
