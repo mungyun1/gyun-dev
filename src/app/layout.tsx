@@ -82,7 +82,7 @@ export default function RootLayout({
           </aside>
 
           {/* 메인 콘텐츠 영역 */}
-          <main className="flex-1 ml-64 mr-80 min-h-[calc(100vh-4rem)] mt-16">
+          <main className="flex-1 ml-64 mr-80 min-h-[calc(100vh-4rem)] mt-16 p-14">
             {children}
           </main>
 

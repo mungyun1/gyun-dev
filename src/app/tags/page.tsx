@@ -21,10 +21,8 @@ const tags = [
 
 export default function TagsPage() {
   return (
-    <main className="ml-64 flex-1 p-8 mr-80">
-      <div className="max-w-3xl mx-auto">
-        <TagList tags={tags} />
-      </div>
-    </main>
+    <div className="w-full max-w-5xl mx-auto">
+      <TagList tags={tags} />
+    </div>
   );
 }

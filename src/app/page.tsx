@@ -46,26 +46,12 @@ const trendingTags = ["자격증", "빅데이터", "GitHub", "blog", "실기시�
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* 메인 컨텐츠 */}
-      <div className="pt-16 flex min-h-screen">
-        {/* 메인 콘텐츠 - 게시물 리스트 */}
-        <main className="ml-64 flex-1 p-8 mr-80">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6">Latest Posts</h2>
-            <div className="space-y-8">
-              {posts.map((post) => (
-                <PostCard key={post.slug} {...post} />
-              ))}
-            </div>
-          </div>
-        </main>
-
-        {/* 오른쪽 사이드바 */}
-        <aside className="w-80 bg-white border-l p-6 fixed right-0 h-[calc(100vh-4rem)] top-16 overflow-y-auto">
-          <RecentUpdates updates={recentUpdates} />
-          <TrendingTags tags={trendingTags} />
-        </aside>
+    <div className="w-full max-w-5xl mx-auto">
+      <h2 className="text-2xl font-bold mb-6">Latest Posts</h2>
+      <div className="space-y-8">
+        {posts.map((post) => (
+          <PostCard key={post.slug} {...post} />
+        ))}
       </div>
     </div>
   );
