@@ -4,12 +4,16 @@ import "./globals.css";
 import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/Header";
+import SocialLinks from "@/components/SocialLinks";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Gyun's Dev",
   description: "개발 블로그",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -25,7 +29,7 @@ export default function RootLayout({
           {/* 왼쪽 프로필 사이드바 */}
           <aside className="fixed top-16 left-0 w-64 bg-white border-r h-[calc(100vh-4rem)]">
             <div className="p-6">
-              <div className="flex flex-col items-center mb-8">
+              <div className="flex flex-col items-center mb-4">
                 <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 mb-4">
                   <Image
                     src="/Profile.png"
@@ -40,26 +44,37 @@ export default function RootLayout({
                 <p className="text-sm text-gray-600">Think Different</p>
               </div>
 
+              <SocialLinks />
+
               <nav className="space-y-2">
-                <Link href="/" className="block py-2 hover:text-blue-600">
+                <Link
+                  href="/"
+                  className="block py-2 hover:text-blue-600 text-center"
+                >
                   HOME
                 </Link>
                 <Link
                   href="/categories"
-                  className="block py-2 hover:text-blue-600"
+                  className="block py-2 hover:text-blue-600 text-center"
                 >
                   CATEGORIES
                 </Link>
-                <Link href="/tags" className="block py-2 hover:text-blue-600">
+                <Link
+                  href="/tags"
+                  className="block py-2 hover:text-blue-600 text-center"
+                >
                   TAGS
                 </Link>
                 <Link
                   href="/archives"
-                  className="block py-2 hover:text-blue-600"
+                  className="block py-2 hover:text-blue-600 text-center"
                 >
                   ARCHIVES
                 </Link>
-                <Link href="/about" className="block py-2 hover:text-blue-600">
+                <Link
+                  href="/about"
+                  className="block py-2 hover:text-blue-600 text-center"
+                >
                   ABOUT
                 </Link>
               </nav>
