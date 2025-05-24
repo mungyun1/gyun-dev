@@ -66,12 +66,6 @@ export default function RootLayout({
                   TAGS
                 </Link>
                 <Link
-                  href="/archives"
-                  className="block py-2 hover:text-blue-600 text-center"
-                >
-                  ARCHIVES
-                </Link>
-                <Link
                   href="/about"
                   className="block py-2 hover:text-blue-600 text-center"
                 >

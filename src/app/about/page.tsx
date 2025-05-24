@@ -10,24 +10,19 @@ export const metadata: Metadata = {
 const introduction = {
   title: "프론트엔드 개발자 박문균입니다🧑‍💻",
   descriptions: [
-    "사용자 경험을 최우선으로 생각하며, 세세한 인터랙션까지 신경쓰는 개발자입니다.",
-    "기술은 문제 해결의 도구라고 생각하며, 사용자의 불편함을 해소하는 데 집중합니다.",
-    "디자이너, 기획자와의 협업을 즐기며 더 나은 사용자 경험을 위해 끊임없이 고민합니다.",
-    "새로운 기술을 배우는 것을 즐기지만, 적재적소에 맞는 기술을 선택하는 것을 중요하게 생각합니다.",
-    "사용자 피드백을 통한 제품 개선에 큰 보람을 느끼며, 데이터 기반의 의사결정을 선호합니다.",
-    "접근성과 성능 최적화를 통해 모든 사용자가 불편함 없이 서비스를 이용할 수 있도록 노력합니다.",
+    "📌 사용자 경험을 최우선으로 고려하며, 세세한 인터랙션까지 신경쓰는 개발자입니다.",
+    "📌 기술은 문제 해결의 도구라고 생각하며, 사용자의 불편함을 해소하는 데 집중합니다.",
+    "📌 디자이너, 기획자와의 협업을 즐기며 더 나은 사용자 경험을 위해 끊임없이 고민합니다.",
+    "📌 새로운 기술을 배우는 것을 즐깁니다.",
+    "📌 접근성과 성능 최적화를 통해 불편함 없이 서비스를 이용할 수 있도록 노력합니다.",
   ],
 };
 
 const skills = [
   { name: "Next.js", category: "Frontend" },
   { name: "React", category: "Frontend" },
-  { name: "TypeScript", category: "Language" },
-  { name: "Python", category: "Language" },
   { name: "Zustand", category: "State Management" },
   { name: "React Query", category: "State Management" },
-  { name: "Tanstack Query", category: "Data Fetching" },
-  { name: "SWR", category: "Data Fetching" },
   { name: "Tailwind CSS", category: "Styling" },
   { name: "Styled Components", category: "Styling" },
   { name: "Docker", category: "Containerization" },
@@ -44,7 +39,7 @@ export default function AboutPage() {
         <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-blue-600 to-cyan-500 text-transparent bg-clip-text">
           {introduction.title}
         </h1>
-        <div className="flex gap-12 items-start">
+        <div className="flex gap-12 items-center">
           <div className="flex flex-col gap-6 w-72">
             <div className="relative">
               <Image

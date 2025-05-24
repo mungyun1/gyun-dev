@@ -19,7 +19,7 @@ export default function PostPage({ params }: PostPageProps) {
         </span>
       </nav>
 
-      <article className="max-w-3xl mx-auto">
+      <article className="max-w-3xl">
         {/* 게시물 헤더 */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">
