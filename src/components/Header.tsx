@@ -21,7 +21,11 @@ export default function Header() {
               <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
             </svg>
           </button>
-          <button className="p-2 hover:bg-gray-100 rounded-full" title="태그">
+          <Link
+            href="/tags"
+            className="p-2 hover:bg-gray-100 rounded-full"
+            title="태그"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -34,7 +38,7 @@ export default function Header() {
                 clipRule="evenodd"
               />
             </svg>
-          </button>
+          </Link>
           <button
             className="p-2 hover:bg-gray-100 rounded-full"
             title="RSS 피드"

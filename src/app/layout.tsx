@@ -28,7 +28,7 @@ export default function RootLayout({
               <div className="flex flex-col items-center mb-8">
                 <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 mb-4">
                   <Image
-                    src="/Profile.svg"
+                    src="/Profile.png"
                     alt="Profile"
                     width={128}
                     height={128}
