@@ -21,7 +21,7 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-slate-900/90 backdrop-blur-sm z-50 border-b dark:border-slate-700">
-      <div className="max-w-[90rem] mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="max-w-[90rem] mx-auto px-4 h-16 flex items-center justify-between shadow-sm">
         <Link
           href="/"
           className="text-xl font-mono font-bold text-gray-900 dark:text-gray-100"
