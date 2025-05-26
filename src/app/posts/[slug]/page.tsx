@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
+import MarkdownContent from "@/components/MarkdownContent";
 import Comments from "@/components/Comments";
 
 interface PostPageProps {
@@ -12,7 +13,15 @@ interface PostPageProps {
 async function getPost(slug: string) {
   const { data: post, error } = await supabase
     .from("posts")
-    .select("*, profiles(name)")
+    .select(
+      `
+      *,
+      categories:categories_id (
+        id,
+        name
+      )
+    `
+    )
     .eq("slug", slug)
     .single();
 
@@ -49,7 +58,11 @@ export default async function PostPage({ params }: PostPageProps) {
             </div>
             <div className="flex items-center">
               <span>Author</span>
-              <span className="mx-2">{post.profiles?.name}</span>
+              <span className="mx-2">Mun Gyun</span>
+            </div>
+            <div className="flex items-center">
+              <span>Category</span>
+              <span className="mx-2">{post.categories?.name}</span>
             </div>
           </div>
         </div>
@@ -90,10 +103,10 @@ export default async function PostPage({ params }: PostPageProps) {
         </div>
 
         {/* 게시물 본문 */}
-        <div className="prose prose-lg max-w-none">{post.content}</div>
+        <MarkdownContent content={post.content} />
 
         {/* 댓글 섹션 */}
-        <Comments slug={params.slug} />
+        {/* <Comments slug={params.slug} /> */}
       </article>
     </main>
   );

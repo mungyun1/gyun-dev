@@ -1,58 +1,48 @@
-import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 import PostCard from "@/components/PostCard";
-import RecentUpdates from "@/components/RecentUpdates";
-import TrendingTags from "@/components/TrendingTags";
 
-// 임시 데이터
-const posts = [
-  {
-    title: "(데이터 자격증) 빅데이터 분석기사 실기시험 준비 후기와 팁",
-    slug: "certificate-bbg2",
-    summary:
-      "3줄 요약 어떤 시험? 빅데이터 분석 자격 중명을 위해 새롭게 개설된 자격 시험 공부법...",
-    date: "Jul 18, 2022",
-    categories: ["자격개시판", "자기개발"],
-  },
-  {
-    title: "(IT 자격증) 정보처리기사 실기시험 준비 후기와 팁",
-    slug: "certificate-it1",
-    summary: "3줄 요약 어떤 시험? 유서깊은 IT 근본 국가공인 자격증 공부법...",
-    date: "Jul 15, 2022",
-    categories: ["자격개시판", "자기개발"],
-  },
-  {
-    title: "Github 블로그 만들기 - 1. 시작하기",
-    slug: "github-blog-1",
-    summary: "Github Pages를 이용한 블로그 만들기 시리즈를 시작합니다...",
-    date: "Jul 10, 2022",
-    categories: ["개발", "블로그"],
-  },
-];
+async function getPosts() {
+  const { data: posts, error } = await supabase
+    .from("posts")
+    .select(
+      `
+      *,
+      categories:categories_id (
+        name
+      )
+    `
+    )
+    .order("created_at", { ascending: false });
 
-const recentUpdates = [
-  {
-    title: "(IT 자격증) 정보처리기사 실기시험 준비",
-    summary: "3줄 요약 어떤 시험?...",
-    slug: "certificate-it1",
-  },
-  {
-    title: "(데이터 자격증) 빅데이터 분석기사 실기",
-    summary: "3줄 요약 어떤 시험?...",
-    slug: "certificate-bbg2",
-  },
-];
+  if (error) {
+    console.error("Error fetching posts:", error);
+    return [];
+  }
 
-const trendingTags = ["자격증", "빅데이터", "GitHub", "blog", "실기시험"];
+  return posts;
+}
 
-export default function Home() {
+export default async function Home() {
+  const posts = await getPosts();
+
   return (
-    <div className="w-full max-w-5xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6">Latest Posts</h2>
-      <div className="space-y-8">
+    <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-12">
+        Recent Posts
+      </h1>
+      <div className="grid gap-8">
         {posts.map((post) => (
-          <PostCard key={post.slug} {...post} />
+          <PostCard
+            key={post.slug}
+            title={post.title}
+            slug={post.slug}
+            summary={post.summary}
+            content={post.content}
+            created_at={post.created_at}
+            categories={post.categories}
+          />
         ))}
       </div>
-    </div>
+    </main>
   );
 }
