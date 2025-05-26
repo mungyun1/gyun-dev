@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.8",
     "@tanstack/react-query": "^5.76.2",
     "@tanstack/react-query-devtools": "^5.76.2",
     "@uiw/react-md-editor": "^4.0.7",

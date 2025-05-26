@@ -1,26 +1,14 @@
 import { NextResponse } from "next/server";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  orderBy,
-  query,
-} from "firebase/firestore";
-import { auth } from "@/lib/firebase";
-
-const db = getFirestore();
+import { supabase } from "@/lib/supabase";
 
 export async function GET() {
   try {
-    const postsRef = collection(db, "posts");
-    const q = query(postsRef, orderBy("createdAt", "desc"));
-    const querySnapshot = await getDocs(q);
+    const { data: posts, error } = await supabase
+      .from("posts")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-    const posts = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    if (error) throw error;
 
     return NextResponse.json(posts);
   } catch (error) {
@@ -34,8 +22,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const currentUser = auth.currentUser;
-    if (!currentUser) {
+    const session = await supabase.auth.getSession();
+    if (!session.data.session) {
       return NextResponse.json(
         { error: "인증되지 않은 사용자입니다." },
         { status: 401 }
@@ -43,13 +31,18 @@ export async function POST(request: Request) {
     }
 
     const data = await request.json();
-    const postsRef = collection(db, "posts");
-    const docRef = await addDoc(postsRef, {
-      ...data,
-      authorId: currentUser.uid,
-    });
+    const { data: post, error } = await supabase
+      .from("posts")
+      .insert({
+        ...data,
+        user_id: session.data.session.user.id,
+      })
+      .select()
+      .single();
 
-    return NextResponse.json({ id: docRef.id });
+    if (error) throw error;
+
+    return NextResponse.json(post);
   } catch (error) {
     console.error("Error creating post:", error);
     return NextResponse.json(
