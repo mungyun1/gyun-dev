@@ -5,8 +5,9 @@ import Link from "next/link";
 
 interface Post {
   id: string;
+  slug: string;
   title: string;
-  createdAt: string;
+  created_at: string;
   tags: string[];
 }
 
@@ -23,6 +24,7 @@ export default function PostList() {
       const response = await fetch("/api/posts");
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         setPosts(data);
       } else {
         throw new Error("게시물 목록을 불러오는데 실패했습니다.");
@@ -56,7 +58,7 @@ export default function PostList() {
   };
 
   if (loading) {
-    return <div className="text-center">로딩 중...</div>;
+    return <div>로딩중 ...</div>;
   }
 
   if (posts.length === 0) {
@@ -74,20 +76,22 @@ export default function PostList() {
               <div className="flex items-center justify-between">
                 <div className="flex-1 min-w-0">
                   <Link
-                    href={`/admin/posts/${post.id}/edit`}
+                    href={`/admin/posts/${post.slug}/edit`}
                     className="text-lg font-medium text-blue-600 hover:text-blue-800 truncate"
                   >
                     {post.title}
                   </Link>
                   <div className="mt-2 flex items-center text-sm text-gray-500">
-                    <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+                    <span>
+                      {new Date(post.created_at).toLocaleDateString()}
+                    </span>
                     <span className="mx-2">•</span>
                     <span>{post.tags.join(", ")}</span>
                   </div>
                 </div>
                 <div className="flex space-x-4">
                   <Link
-                    href={`/admin/posts/${post.id}/edit`}
+                    href={`/admin/posts/${post.slug}/edit`}
                     className="text-blue-600 hover:text-blue-800"
                   >
                     수정

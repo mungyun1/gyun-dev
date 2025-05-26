@@ -19,6 +19,21 @@ export default function PostCard({
   created_at,
   categories,
 }: PostCardProps) {
+  // 날짜 포맷팅 함수
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      return new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }).format(date);
+    } catch (error) {
+      console.error("Date formatting error:", error);
+      return "Date unavailable";
+    }
+  };
+
   return (
     <Link href={`/posts/${slug}`} className="block">
       <article className="bg-white dark:bg-slate-800/50 rounded-xl p-6 hover:shadow-lg transition-all duration-200 border border-gray-100 dark:border-slate-800">
@@ -31,11 +46,7 @@ export default function PostCard({
           )}
           <span className="text-gray-400 dark:text-gray-500">•</span>
           <time dateTime={created_at} className="text-sm">
-            {new Date(created_at).toLocaleDateString("ko-KR", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
+            {formatDate(created_at)}
           </time>
         </div>
 

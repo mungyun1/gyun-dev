@@ -19,6 +19,8 @@ async function getPosts() {
     return [];
   }
 
+  // 날짜 데이터 확인
+  console.log("First post created_at:", posts[0]?.created_at);
   return posts;
 }
 
