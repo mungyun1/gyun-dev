@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
+import { supabase } from "@/lib/supabase";
 
 const MDEditor = dynamic(
   () => import("@uiw/react-md-editor").then((mod) => mod.default),
@@ -12,32 +13,34 @@ const MDEditor = dynamic(
 );
 
 interface PostEditorProps {
-  postId?: string;
+  postSlug?: string;
 }
 
-export default function PostEditor({ postId }: PostEditorProps) {
+export default function PostEditor({ postSlug }: PostEditorProps) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    if (postId) {
+    if (postSlug) {
       fetchPost();
     }
-  }, [postId]);
+  }, [postSlug]);
 
   const fetchPost = async () => {
     try {
-      const response = await fetch(`/api/posts/${postId}`);
-      if (response.ok) {
-        const post = await response.json();
-        setTitle(post.title);
-        setContent(post.content);
-        setTags(post.tags.join(", "));
-      } else {
-        throw new Error("게시물을 불러오는데 실패했습니다.");
-      }
+      const { data: post, error } = await supabase
+        .from("posts")
+        .select("*")
+        .eq("slug", postSlug)
+        .single();
+
+      if (error) throw error;
+
+      setTitle(post.title);
+      setContent(post.content);
+      setTags(post.tags?.join(", ") || "");
     } catch (error) {
       console.error("게시물 조회 중 오류:", error);
       alert("게시물을 불러오는 중 오류가 발생했습니다.");
@@ -48,34 +51,46 @@ export default function PostEditor({ postId }: PostEditorProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const url = postId ? `/api/posts/${postId}` : "/api/posts";
-      const method = postId ? "PUT" : "POST";
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          content,
-          tags: tags.split(",").map((tag) => tag.trim()),
-          ...(method === "POST" && { createdAt: new Date().toISOString() }),
-        }),
-      });
-
-      if (response.ok) {
-        router.push("/admin/posts");
-      } else {
-        throw new Error(postId ? "게시물 수정 실패" : "게시물 생성 실패");
+      const session = await supabase.auth.getSession();
+      if (!session.data.session) {
+        throw new Error("인증되지 않은 사용자입니다.");
       }
+
+      const postData = {
+        title,
+        content,
+        tags: tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean),
+        user_id: session.data.session.user.id,
+        slug: postSlug || title.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      };
+
+      let error;
+      if (postSlug) {
+        const { error: updateError } = await supabase
+          .from("posts")
+          .update(postData)
+          .eq("slug", postSlug);
+        error = updateError;
+      } else {
+        const { error: insertError } = await supabase
+          .from("posts")
+          .insert(postData);
+        error = insertError;
+      }
+
+      if (error) throw error;
+
+      router.push("/admin/posts");
     } catch (error) {
       console.error(
-        postId ? "게시물 수정 중 오류:" : "게시물 생성 중 오류:",
+        postSlug ? "게시물 수정 중 오류:" : "게시물 생성 중 오류:",
         error
       );
       alert(
-        postId
+        postSlug
           ? "게시물을 수정하는 중 오류가 발생했습니다."
           : "게시물을 생성하는 중 오류가 발생했습니다."
       );
@@ -147,7 +162,7 @@ export default function PostEditor({ postId }: PostEditorProps) {
           type="submit"
           className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
         >
-          {postId ? "수정" : "저장"}
+          {postSlug ? "수정" : "저장"}
         </button>
       </div>
     </form>

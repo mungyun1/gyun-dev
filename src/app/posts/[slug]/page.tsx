@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
+import { notFound } from "next/navigation";
 import Comments from "@/components/Comments";
 
 interface PostPageProps {
@@ -7,38 +9,47 @@ interface PostPageProps {
   };
 }
 
-export default function PostPage({ params }: PostPageProps) {
+async function getPost(slug: string) {
+  const { data: post, error } = await supabase
+    .from("posts")
+    .select("*, profiles(name)")
+    .eq("slug", slug)
+    .single();
+
+  if (error) {
+    notFound();
+  }
+
+  return post;
+}
+
+export default async function PostPage({ params }: PostPageProps) {
+  const post = await getPost(params.slug);
+
   return (
-    <main className="max-w-3xl mx-auto px-4 py-8">
+    <main className="p-8">
       <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-8">
         <Link href="/" className="hover:text-blue-600">
           Home
         </Link>
         <span className="text-gray-300">›</span>
-        <span className="text-gray-900 dark:text-gray-300">
-          (데이터 자격증) 빅데이터 분석기사 실기시험 준비 후기와 팁
-        </span>
+        <span className="text-gray-900">{post.title}</span>
       </nav>
 
-      <article>
+      <article className="max-w-3xl">
         {/* 게시물 헤더 */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-            (데이터 자격증) 빅데이터 분석기사 실기시험 준비 후기와 팁
-          </h1>
-          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 space-x-4">
+          <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
+          <div className="flex items-center text-sm text-gray-500 space-x-4">
             <div className="flex items-center">
               <span>Posted</span>
-              <span className="mx-2">Jul 18, 2022</span>
+              <span className="mx-2">
+                {new Date(post.created_at).toLocaleDateString()}
+              </span>
             </div>
             <div className="flex items-center">
               <span>Author</span>
-              <span className="mx-2">tiredo</span>
-            </div>
-            <div className="flex items-center">
-              <span>Views</span>
-              <span className="mx-2">•</span>
-              <span>21 min read</span>
+              <span className="mx-2">{post.profiles?.name}</span>
             </div>
           </div>
         </div>
@@ -79,15 +90,7 @@ export default function PostPage({ params }: PostPageProps) {
         </div>
 
         {/* 게시물 본문 */}
-        <div className="prose prose-lg max-w-none dark:prose-invert mb-16">
-          <p>
-            이번 글에서는 빅데이터 분석기사 실기시험에 대한 정보와 공부법을
-            소개해 드리겠습니다.
-          </p>
-          <h2>시험 일정</h2>
-          <p>시험 일정과 관련된 상세 내용...</p>
-          {/* 추가 본문 내용 */}
-        </div>
+        <div className="prose prose-lg max-w-none">{post.content}</div>
 
         {/* 댓글 섹션 */}
         <Comments slug={params.slug} />
