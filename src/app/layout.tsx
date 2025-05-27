@@ -7,8 +7,36 @@ import Header from "@/components/Header";
 import SocialLinks from "@/components/SocialLinks";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "next-themes";
+import { supabase } from "@/lib/supabase";
 
 const inter = Inter({ subsets: ["latin"] });
+
+interface Post {
+  slug: string;
+  title: string;
+  summary: string;
+  created_at: string;
+}
+
+// 최근 게시물을 가져오는 함수
+async function getRecentPosts() {
+  const threeDaysAgo = new Date();
+  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+
+  const { data: posts, error } = await supabase
+    .from("posts")
+    .select("slug, title, summary, created_at")
+    .gte("created_at", threeDaysAgo.toISOString())
+    .order("created_at", { ascending: false })
+    .limit(5);
+
+  if (error) {
+    console.error("Error fetching recent posts:", error);
+    return [];
+  }
+
+  return posts;
+}
 
 export const metadata: Metadata = {
   title: "Gyun's Dev",
@@ -18,13 +46,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   modal,
 }: {
   children: React.ReactNode;
   modal: React.ReactNode;
 }) {
+  const recentPosts = await getRecentPosts();
+
   return (
     <html lang="ko" suppressHydrationWarning>
       <body
@@ -104,28 +134,26 @@ export default function RootLayout({
                         Recently Updated
                       </h2>
                       <div className="space-y-4">
-                        <Link
-                          href="/posts/certificate-it1"
-                          className="block hover:bg-gray-50 dark:hover:bg-slate-700 p-2 rounded"
-                        >
-                          <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                            (IT 자격증) 정보처리기사 실기시험 준비
-                          </h3>
-                          <p className="text-xs text-gray-600 dark:text-gray-300">
-                            3줄 요약 어떤 시험?...
+                        {recentPosts.length > 0 ? (
+                          recentPosts.map((post: Post) => (
+                            <Link
+                              key={post.slug}
+                              href={`/posts/${post.slug}`}
+                              className="block hover:bg-gray-50 dark:hover:bg-slate-700 p-2 rounded"
+                            >
+                              <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                {post.title}
+                              </h3>
+                              <p className="text-xs text-gray-600 dark:text-gray-300">
+                                {post.summary}
+                              </p>
+                            </Link>
+                          ))
+                        ) : (
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                            최근 작성된 게시물이 없습니다.
                           </p>
-                        </Link>
-                        <Link
-                          href="/posts/certificate-bbg2"
-                          className="block hover:bg-gray-50 dark:hover:bg-slate-700 p-2 rounded"
-                        >
-                          <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                            (데이터 자격증) 빅데이터 분석기사 실기
-                          </h3>
-                          <p className="text-xs text-gray-600 dark:text-gray-300">
-                            3줄 요약 어떤 시험?...
-                          </p>
-                        </Link>
+                        )}
                       </div>
                     </section>
 
