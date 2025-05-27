@@ -90,7 +90,8 @@ export default function Header() {
               <path d="M4 9a1 1 0 011-1 7 7 0 017 7 1 1 0 11-2 0 5 5 0 00-5-5 1 1 0 01-1-1zM3 15a2 2 0 114 0 2 2 0 01-4 0z" />
             </svg>
           </button>
-          <button
+          <Link
+            href="/search"
             className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full text-gray-600 dark:text-gray-300"
             title="검색"
           >
@@ -106,7 +107,7 @@ export default function Header() {
                 clipRule="evenodd"
               />
             </svg>
-          </button>
+          </Link>
         </div>
       </div>
     </header>
