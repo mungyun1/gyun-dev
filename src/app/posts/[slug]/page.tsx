@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { createServerSupabaseClient } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import MarkdownContent from "@/components/MarkdownContent";
 
@@ -10,6 +10,7 @@ interface PostPageProps {
 }
 
 async function getPost(slug: string) {
+  const supabase = createServerSupabaseClient();
   const { data: post, error } = await supabase
     .from("posts")
     .select(
