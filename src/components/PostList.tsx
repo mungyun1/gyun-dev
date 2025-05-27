@@ -2,112 +2,41 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { formatDate } from "@/utils/date";
 
 interface Post {
-  id: string;
-  slug: string;
+  id: number;
   title: string;
+  summary: string;
+  slug: string;
   created_at: string;
-  tags: string[];
 }
 
-export default function PostList() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+interface PostListProps {
+  posts: Post[];
+}
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = async () => {
-    try {
-      const response = await fetch("/api/posts");
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setPosts(data);
-      } else {
-        throw new Error("게시물 목록을 불러오는데 실패했습니다.");
-      }
-    } catch (error) {
-      console.error("게시물 목록 조회 중 오류:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDelete = async (postId: string) => {
-    if (!window.confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/posts/${postId}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        setPosts(posts.filter((post) => post.id !== postId));
-      } else {
-        throw new Error("게시물 삭제에 실패했습니다.");
-      }
-    } catch (error) {
-      console.error("게시물 삭제 중 오류:", error);
-      alert("게시물을 삭제하는 중 오류가 발생했습니다.");
-    }
-  };
-
-  if (loading) {
-    return <div>로딩중 ...</div>;
-  }
-
-  if (posts.length === 0) {
-    return (
-      <div className="text-center text-gray-500">작성된 게시물이 없습니다.</div>
-    );
-  }
-
+export default function PostList({ posts }: PostListProps) {
   return (
-    <div className="bg-white shadow overflow-hidden sm:rounded-md">
-      <ul className="divide-y divide-gray-200">
-        {posts.map((post) => (
-          <li key={post.id}>
-            <div className="px-4 py-4 sm:px-6">
-              <div className="flex items-center justify-between">
-                <div className="flex-1 min-w-0">
-                  <Link
-                    href={`/admin/posts/${post.slug}/edit`}
-                    className="text-lg font-medium text-blue-600 hover:text-blue-800 truncate"
-                  >
-                    {post.title}
-                  </Link>
-                  <div className="mt-2 flex items-center text-sm text-gray-500">
-                    <span>
-                      {new Date(post.created_at).toLocaleDateString()}
-                    </span>
-                    <span className="mx-2">•</span>
-                    <span>{post.tags.join(", ")}</span>
-                  </div>
-                </div>
-                <div className="flex space-x-4">
-                  <Link
-                    href={`/admin/posts/${post.slug}/edit`}
-                    className="text-blue-600 hover:text-blue-800"
-                  >
-                    수정
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(post.id)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    삭제
-                  </button>
-                </div>
-              </div>
+    <div className="space-y-4">
+      {posts.map((post) => (
+        <article
+          key={post.id}
+          className="border dark:border-slate-700 rounded-lg p-6 hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
+        >
+          <Link href={`/posts/${post.slug}`} className="block group">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 mb-2">
+              {post.title}
+            </h2>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
+              {post.summary}
+            </p>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              {formatDate(post.created_at)}
             </div>
-          </li>
-        ))}
-      </ul>
+          </Link>
+        </article>
+      ))}
     </div>
   );
 }
