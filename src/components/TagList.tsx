@@ -20,18 +20,48 @@ const hashString = (str: string): number => {
   return Math.abs(hash);
 };
 
-// 미리 정의된 색상 조합 (배경색, 텍스트색)
+// 미리 정의된 색상 조합 (배경색, 텍스트색, 다크모드)
 const colorPairs = [
-  { bg: "bg-blue-50", text: "text-blue-800" },
-  { bg: "bg-green-50", text: "text-green-800" },
-  { bg: "bg-purple-50", text: "text-purple-800" },
-  { bg: "bg-yellow-50", text: "text-yellow-800" },
-  { bg: "bg-pink-50", text: "text-pink-800" },
-  { bg: "bg-indigo-50", text: "text-indigo-800" },
-  { bg: "bg-red-50", text: "text-red-800" },
-  { bg: "bg-cyan-50", text: "text-cyan-800" },
-  { bg: "bg-orange-50", text: "text-orange-800" },
-  { bg: "bg-teal-50", text: "text-teal-800" },
+  {
+    bg: "bg-blue-50 dark:bg-blue-900/30",
+    text: "text-blue-800 dark:text-blue-200",
+  },
+  {
+    bg: "bg-green-50 dark:bg-green-900/30",
+    text: "text-green-800 dark:text-green-200",
+  },
+  {
+    bg: "bg-purple-50 dark:bg-purple-900/30",
+    text: "text-purple-800 dark:text-purple-200",
+  },
+  {
+    bg: "bg-yellow-50 dark:bg-yellow-900/30",
+    text: "text-yellow-800 dark:text-yellow-200",
+  },
+  {
+    bg: "bg-pink-50 dark:bg-pink-900/30",
+    text: "text-pink-800 dark:text-pink-200",
+  },
+  {
+    bg: "bg-indigo-50 dark:bg-indigo-900/30",
+    text: "text-indigo-800 dark:text-indigo-200",
+  },
+  {
+    bg: "bg-red-50 dark:bg-red-900/30",
+    text: "text-red-800 dark:text-red-200",
+  },
+  {
+    bg: "bg-cyan-50 dark:bg-cyan-900/30",
+    text: "text-cyan-800 dark:text-cyan-200",
+  },
+  {
+    bg: "bg-orange-50 dark:bg-orange-900/30",
+    text: "text-orange-800 dark:text-orange-200",
+  },
+  {
+    bg: "bg-teal-50 dark:bg-teal-900/30",
+    text: "text-teal-800 dark:text-teal-200",
+  },
 ];
 
 // 태그 이름에 따라 일관된 색상 반환

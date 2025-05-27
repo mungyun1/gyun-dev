@@ -1,27 +1,52 @@
+import { Metadata } from "next";
+import { supabase } from "@/lib/supabase";
 import TagList from "@/components/TagList";
 
-// 임시 데이터
-const tags = [
-  { name: "Spring", count: 4 },
-  { name: "회고", count: 3 },
-  { name: "우아한테크코스", count: 3 },
-  { name: "Database", count: 3 },
-  { name: "동시성", count: 2 },
-  { name: "Kotlin", count: 2 },
-  { name: "Java", count: 2 },
-  { name: "JPA", count: 2 },
-  { name: "Domain", count: 2 },
-  { name: "의존성", count: 1 },
-  { name: "보안", count: 1 },
-  { name: "디자인패턴", count: 1 },
-  { name: "Redis", count: 1 },
-  { name: "Event", count: 1 },
-  { name: "ETC", count: 1 },
-];
+export const metadata: Metadata = {
+  title: "Tags | Gyun's Blog",
+  description: "블로그의 모든 태그를 확인할 수 있습니다.",
+};
 
-export default function TagsPage() {
+interface Tag {
+  name: string;
+  count: number;
+}
+
+async function getAllTags(): Promise<Tag[]> {
+  const { data: posts, error } = await supabase.from("posts").select("tags");
+
+  if (error) {
+    console.error("Error fetching posts:", error);
+    return [];
+  }
+
+  // 모든 태그를 하나의 배열로 합치기
+  const allTags = posts.reduce<string[]>((acc, post) => {
+    if (post.tags) {
+      acc.push(...post.tags);
+    }
+    return acc;
+  }, []);
+
+  // 태그별 카운트 계산
+  const tagCounts = allTags.reduce<Record<string, number>>((acc, tag) => {
+    acc[tag] = (acc[tag] || 0) + 1;
+    return acc;
+  }, {});
+
+  // Tag[] 형태로 변환하고 카운트 기준 내림차순 정렬
+  const tags: Tag[] = Object.entries(tagCounts)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+
+  return tags;
+}
+
+export default async function TagsPage() {
+  const tags = await getAllTags();
+
   return (
-    <div className="w-full max-w-5xl mx-auto">
+    <div className="w-full max-w-5xl mx-auto py-8">
       <TagList tags={tags} />
     </div>
   );
