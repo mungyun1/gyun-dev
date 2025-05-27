@@ -76,12 +76,12 @@ export default function AboutPage() {
               {introduction.descriptions.map(({ icon, text }, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-4 p-4 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-4 p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-blue-50 rounded-lg">
+                  <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-blue-50 dark:bg-blue-900/30 rounded-lg">
                     <span className="text-2xl">{icon}</span>
                   </div>
-                  <p className="text-gray-700 leading-relaxed text-lg my-0">
+                  <p className="text-gray-700 dark:text-gray-200 leading-relaxed text-lg my-0">
                     {text}
                   </p>
                 </div>
@@ -96,7 +96,7 @@ export default function AboutPage() {
         <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 text-transparent bg-clip-text">
           주로 사용하는 기술입니다🛠️
         </h2>
-        <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-6 border border-gray-100 dark:border-slate-700">
           <SkillList skills={skills} />
         </div>
       </section>

@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import "@uiw/react-markdown-preview/markdown.css";
-import { useTheme } from "next-themes";
+import useStore from "@/store/useStore";
 
 const MarkdownPreview = dynamic(
   () => import("@uiw/react-markdown-preview").then((mod) => mod.default),
@@ -14,10 +14,10 @@ interface MarkdownContentProps {
 }
 
 export default function MarkdownContent({ content }: MarkdownContentProps) {
-  const { theme } = useTheme();
+  const { theme } = useStore();
 
   return (
-    <div className="prose prose-lg max-w-none dark:prose-invert prose-headings:dark:text-gray-100 prose-p:dark:text-gray-300 prose-strong:dark:text-gray-200 prose-em:dark:text-gray-300 prose-code:dark:text-gray-200 prose-pre:dark:bg-slate-800 prose-pre:dark:text-gray-200 prose-a:dark:text-blue-400 prose-blockquote:dark:text-gray-300 prose-ul:dark:text-gray-300 prose-ol:dark:text-gray-300">
+    <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-800 prose-strong:text-gray-900 prose-em:text-gray-800 prose-code:text-gray-800 prose-pre:bg-gray-100 prose-pre:text-gray-800 prose-a:text-blue-600 prose-blockquote:text-gray-700 prose-ul:text-gray-800 prose-ol:text-gray-800 dark:prose-headings:text-white dark:prose-p:text-white dark:prose-strong:text-white dark:prose-em:text-white dark:prose-code:text-white dark:prose-pre:bg-slate-800 dark:prose-pre:text-white dark:prose-a:text-blue-400 dark:prose-blockquote:text-white dark:prose-ul:text-white dark:prose-ol:text-white">
       <MarkdownPreview
         source={content}
         wrapperElement={{
@@ -25,7 +25,7 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
         }}
         style={{
           backgroundColor: "transparent",
-          color: theme === "dark" ? "#D1D5DB" : "#d1d3dc", // gray-300 for dark, gray-900 for light
+          color: theme === "dark" ? "#FFFFFF" : "#1F2937",
         }}
       />
     </div>

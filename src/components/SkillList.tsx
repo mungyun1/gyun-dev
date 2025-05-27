@@ -55,7 +55,9 @@ export default function SkillList({ skills }: SkillListProps) {
     <div className="space-y-8">
       {Object.entries(groupedSkills).map(([category, skills]) => (
         <div key={category} className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-700">{category}</h3>
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-white">
+            {category}
+          </h3>
           <div className="flex flex-wrap gap-3">
             {skills.map((skill) => (
               <div
