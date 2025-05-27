@@ -8,6 +8,7 @@ import SocialLinks from "@/components/SocialLinks";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "next-themes";
 import { supabase } from "@/lib/supabase";
+import TopTags from "@/components/TopTags";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -158,43 +159,8 @@ export default async function RootLayout({
                     </section>
 
                     {/* 트렌딩 태그 섹션 */}
-                    <section>
-                      <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-                        Trending Tags
-                      </h2>
-                      <div className="flex flex-wrap gap-2">
-                        <Link
-                          href="#"
-                          className="px-3 py-1 bg-gray-100 dark:bg-slate-700 rounded-full text-sm text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-slate-600"
-                        >
-                          자격증
-                        </Link>
-                        <Link
-                          href="#"
-                          className="px-3 py-1 bg-gray-100 dark:bg-slate-700 rounded-full text-sm text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-slate-600"
-                        >
-                          빅데이터
-                        </Link>
-                        <Link
-                          href="#"
-                          className="px-3 py-1 bg-gray-100 dark:bg-slate-700 rounded-full text-sm text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-slate-600"
-                        >
-                          GitHub
-                        </Link>
-                        <Link
-                          href="#"
-                          className="px-3 py-1 bg-gray-100 dark:bg-slate-700 rounded-full text-sm text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-slate-600"
-                        >
-                          blog
-                        </Link>
-                        <Link
-                          href="#"
-                          className="px-3 py-1 bg-gray-100 dark:bg-slate-700 rounded-full text-sm text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-slate-600"
-                        >
-                          실기시험
-                        </Link>
-                      </div>
-                    </section>
+
+                    <TopTags />
                   </div>
                 </aside>
               </div>
