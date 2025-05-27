@@ -20,8 +20,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   return (
     <html lang="ko" suppressHydrationWarning>
@@ -38,14 +40,16 @@ export default function RootLayout({
                   <div className="p-6">
                     <div className="flex flex-col items-center mb-4">
                       <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 dark:bg-slate-700 mb-4">
-                        <Image
-                          src="/Profile.png"
-                          alt="Profile"
-                          width={128}
-                          height={128}
-                          className="object-cover"
-                          priority
-                        />
+                        <Link href="/about">
+                          <Image
+                            src="/Profile.png"
+                            alt="Profile"
+                            width={128}
+                            height={128}
+                            className="object-cover cursor-pointer hover:opacity-80 transition-opacity"
+                            priority
+                          />
+                        </Link>
                       </div>
                       <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                         Mun Gyun
@@ -167,6 +171,7 @@ export default function RootLayout({
                 </aside>
               </div>
             </div>
+            {modal}
           </AuthProvider>
         </ThemeProvider>
       </body>

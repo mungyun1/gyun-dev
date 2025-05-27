@@ -2,7 +2,6 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import MarkdownContent from "@/components/MarkdownContent";
-import Comments from "@/components/Comments";
 
 interface PostPageProps {
   params: {
