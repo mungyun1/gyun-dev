@@ -47,7 +47,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
       <article className="max-w-4xl mx-auto">
         {/* 게시물 헤더 */}
-        <div className="mb-8 sm:mb-12 pb-6 sm:pb-8 border-b border-gray-200 dark:border-gray-700">
+        <div className="mb-8 sm:mb-12 pb-6 sm:pb-8">
           <h1 className="text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 break-keep leading-tight">
             {post.title}
           </h1>

@@ -64,7 +64,7 @@ export default async function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
             <Header />
-            <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
+            <div className="min-h-screen bg-white dark:bg-slate-900">
               <div className="flex relative">
                 {/* 왼쪽 프로필 사이드바 - 768px 이상에서만 표시 */}
                 <aside className="hidden md:block fixed top-16 left-0 w-64 bg-white dark:bg-slate-800 border-r dark:border-slate-700 h-[calc(100vh-4rem)]">
