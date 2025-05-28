@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import useStore from "@/store/useStore";
@@ -10,7 +10,19 @@ const MDEditor = dynamic(
   { ssr: false }
 );
 
-export default function PostEditor() {
+interface Post {
+  id?: number;
+  title: string;
+  content: string;
+  summary: string;
+  slug: string;
+}
+
+interface PostEditorProps {
+  initialData?: Post;
+}
+
+export default function PostEditor({ initialData }: PostEditorProps) {
   const router = useRouter();
   const { theme } = useStore();
   const [title, setTitle] = useState("");
@@ -19,14 +31,27 @@ export default function PostEditor() {
   const [slug, setSlug] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // 초기 데이터 설정
+  useEffect(() => {
+    if (initialData) {
+      setTitle(initialData.title);
+      setContent(initialData.content);
+      setSummary(initialData.summary);
+      setSlug(initialData.slug);
+    }
+  }, [initialData]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
 
     try {
       setIsSubmitting(true);
-      const res = await fetch("/api/posts", {
-        method: "POST",
+      const method = initialData ? "PUT" : "POST";
+      const url = initialData ? `/api/posts/${initialData.slug}` : "/api/posts";
+
+      const res = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -39,13 +64,15 @@ export default function PostEditor() {
       });
 
       if (!res.ok) {
-        throw new Error("게시물 작성에 실패했습니다.");
+        const errorData = await res.json();
+        throw new Error(errorData.error || "게시물 작성에 실패했습니다.");
       }
 
       router.push("/admin/posts");
+      router.refresh();
     } catch (error) {
-      console.error("Error creating post:", error);
-      alert("게시물 작성에 실패했습니다.");
+      console.error("Error:", error);
+      alert(error instanceof Error ? error.message : "오류가 발생했습니다.");
     } finally {
       setIsSubmitting(false);
     }
@@ -134,7 +161,13 @@ export default function PostEditor() {
           disabled={isSubmitting}
           className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? "저장 중..." : "저장"}
+          {isSubmitting
+            ? initialData
+              ? "수정 중..."
+              : "저장 중..."
+            : initialData
+            ? "수정"
+            : "저장"}
         </button>
       </div>
     </form>
