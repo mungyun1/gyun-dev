@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 📝 프로젝트 소개
 
-## Getting Started
+Gyun Dev는 저의 개인 블로그입니다. 이 프로젝트는 Next.js와 TypeScript를 활용하여 개발되었으며, Firebase를 통한 인증 시스템과 Supabase를 통한 데이터 관리를 구현하고 있습니다. 또한 마크다운 에디터를 지원하여 콘텐츠 작성이 용이하며, 다크 모드를 지원합니다.
 
-First, run the development server:
+## 🛠 기술 스택
+
+### 🎨 Frontend
+
+- **Framework**: Next.js 15.1.8
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: Zustand, TanStack Query (React Query)
+
+### 💾 Backend & Database
+
+- **Framework**: Next.js 15.1.8 (API Routes)
+- **Language**: SQL
+- **Authentication**: Firebase Auth
+- **Database**: Supabase
+
+### 📚 기타 라이브러리
+
+- **마크다운 지원**
+  - @uiw/react-md-editor
+  - rehype-autolink-headings
+  - rehype-slug
+  - remark-breaks
+  - remark-gfm
+
+### 🔧 개발 도구
+
+- ESLint
+- TypeScript
+- Tailwind CSS
+
+### ✨ 특징
+
+- 다크 모드 지원 (next-themes)
+- TypeScript 기반 타입 안정성
+- 반응형 디자인
+- 마크다운 에디터 내장
+- 실시간 데이터 동기화
+
+## 🏃‍♂️ 시작하기
 
 ```bash
+# 의존성 설치
+npm install
+
+# 개발 서버 실행
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# 프로덕션 빌드
+npm run build
+
+# 프로덕션 서버 실행
+npm run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📂 프로젝트 구조
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/         # 페이지 및 라우팅
+├── components/  # 재사용 가능한 컴포넌트
+├── lib/         # 유틸리티 및 설정
+├── store/       # 상태 관리
+├── utils/       # 유틸리티 함수
+└── contexts/    # React Context
+```
