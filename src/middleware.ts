@@ -7,9 +7,6 @@ export async function middleware(request: NextRequest) {
     const accessToken = request.cookies.get("sb-access-token");
     const user = request.cookies.get("sb-user");
 
-    console.log("accessToken", accessToken);
-    console.log("user", user);
-
     // 인증되지 않은 사용자인 경우
     if (!accessToken || !user) {
       const redirectUrl = new URL("/login", request.url);
