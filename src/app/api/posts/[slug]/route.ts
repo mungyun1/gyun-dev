@@ -2,27 +2,12 @@ import { NextResponse } from "next/server";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
-// 사용자 인증 체크 함수
-async function checkAuth() {
-  const supabase = createRouteHandlerClient({ cookies: () => cookies() });
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
-
-  if (error || !user) {
-    throw new Error("인증되지 않은 사용자입니다.");
-  }
-
-  return { supabase, user };
-}
-
 export async function GET(
   request: Request,
   context: { params: { slug: string } }
 ) {
   try {
-    const { supabase } = await checkAuth();
+    const supabase = createRouteHandlerClient({ cookies: () => cookies() });
     const { slug } = await context.params;
 
     // 게시물 조회
@@ -58,7 +43,7 @@ export async function PUT(
   context: { params: { slug: string } }
 ) {
   try {
-    const { supabase, user } = await checkAuth();
+    const supabase = createRouteHandlerClient({ cookies: () => cookies() });
     const { slug } = await context.params;
     const data = await request.json();
 
@@ -73,7 +58,7 @@ export async function PUT(
         updated_at: new Date().toISOString(),
       })
       .eq("slug", slug)
-      .eq("user_id", user.id) // 자신의 게시물만 수정 가능
+
       .select()
       .single();
 
@@ -103,7 +88,7 @@ export async function DELETE(
   context: { params: { slug: string } }
 ) {
   try {
-    const { supabase, user } = await checkAuth();
+    const supabase = createRouteHandlerClient({ cookies: () => cookies() });
     const { slug } = await context.params;
 
     // 게시물 조회
@@ -117,14 +102,6 @@ export async function DELETE(
       return NextResponse.json(
         { error: "게시물을 찾을 수 없습니다." },
         { status: 404 }
-      );
-    }
-
-    // 자신의 게시물인지 확인
-    if (post.user_id !== user.id) {
-      return NextResponse.json(
-        { error: "게시물을 삭제할 권한이 없습니다." },
-        { status: 403 }
       );
     }
 
