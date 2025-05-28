@@ -1,99 +1,92 @@
-interface Post {
-  title: string;
-  date: string;
-  slug: string;
-}
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Category {
-  title: string;
-  posts: Post[];
-  lastUpdated: string;
-  postCount: number;
+  id: string;
+  name: string;
+  created_at: string;
+  updated_at: string;
 }
 
-export const categories: Category[] = [
-  {
-    title: "회고",
-    posts: [
-      {
-        title: "2023년 회고",
-        date: "January 09, 2024",
-        slug: "2023-retrospect",
-      },
-      {
-        title: "2022년 회고",
-        date: "December 31, 2022",
-        slug: "2022-retrospect",
-      },
-    ],
-    lastUpdated: "January 09, 2024",
-    postCount: 3,
-  },
-  {
-    title: "F12 퀴리 개선기",
-    posts: [
-      {
-        title: "F12 퀴리 개선기 (1)",
-        date: "September 28, 2022",
-        slug: "f12-query-improvement-1",
-      },
-      {
-        title: "F12 퀴리 개선기 (2)",
-        date: "September 29, 2022",
-        slug: "f12-query-improvement-2",
-      },
-    ],
-    lastUpdated: "September 28, 2022",
-    postCount: 2,
-  },
-  {
-    title: "Spring DI/IoC",
-    posts: [
-      {
-        title: "Spring DI/IoC (1)",
-        date: "May 05, 2022",
-        slug: "spring-di-ioc-1",
-      },
-      {
-        title: "Spring DI/IoC (2)",
-        date: "May 06, 2022",
-        slug: "spring-di-ioc-2",
-      },
-    ],
-    lastUpdated: "May 05, 2022",
-    postCount: 3,
-  },
-];
+interface CategoryListProps {
+  categories: Category[];
+}
 
-export default function CategoryList() {
+export default function CategoryList({ categories }: CategoryListProps) {
+  const router = useRouter();
+  const [isDeleting, setIsDeleting] = useState<string | null>(null);
+
+  const handleDelete = async (categoryId: string) => {
+    if (!confirm("이 카테고리를 삭제하시겠습니까?")) {
+      return;
+    }
+
+    setIsDeleting(categoryId);
+    try {
+      const response = await fetch(`/api/categories/${categoryId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("카테고리 삭제에 실패했습니다.");
+      }
+
+      router.refresh();
+    } catch (error) {
+      console.error("Error deleting category:", error);
+      alert("카테고리 삭제 중 오류가 발생했습니다.");
+    } finally {
+      setIsDeleting(null);
+    }
+  };
+
   return (
-    <div className="space-y-8">
-      {categories.map((category) => (
-        <div
-          key={category.title}
-          className="pb-8 border-b border-gray-200 last:border-0"
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <h2 className="text-2xl font-bold">{category.title}</h2>
-            <span className="text-sm text-gray-500">
-              ({category.postCount} Posts)
-            </span>
-          </div>
-          <ul className="space-y-2">
-            {category.posts.map((post) => (
-              <li key={post.slug} className="flex items-center gap-2">
-                <a
-                  href={`/posts/${post.slug}`}
-                  className="hover:text-blue-500 transition-colors"
+    <div className="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-md">
+      <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+        {categories.map((category) => (
+          <li key={category.id}>
+            <div className="px-4 py-4 sm:px-6 flex items-center justify-between">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <p className="text-lg font-medium text-blue-600 dark:text-blue-400 truncate">
+                    {category.name}
+                  </p>
+                </div>
+                <div className="mt-2 flex items-center text-sm text-gray-500 dark:text-gray-400">
+                  <p>
+                    생성일: {new Date(category.created_at).toLocaleDateString()}
+                  </p>
+                  <span className="mx-2">•</span>
+                  <p>
+                    수정일: {new Date(category.updated_at).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+              <div className="ml-6 flex items-center space-x-3">
+                <button
+                  onClick={() => handleDelete(category.id)}
+                  disabled={isDeleting === category.id}
+                  className={`text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 ${
+                    isDeleting === category.id
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  }`}
                 >
-                  {post.title}
-                </a>
-                <span className="text-sm text-gray-400">{post.date}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+                  {isDeleting === category.id ? "삭제 중..." : "삭제"}
+                </button>
+              </div>
+            </div>
+          </li>
+        ))}
+        {categories.length === 0 && (
+          <li className="px-4 py-4 sm:px-6 text-center text-gray-500 dark:text-gray-400">
+            등록된 카테고리가 없습니다.
+          </li>
+        )}
+      </ul>
     </div>
   );
 }
