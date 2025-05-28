@@ -16,12 +16,12 @@ export default function Modal({ children }: ModalProps) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/30 flex flex-col items-center justify-center"
+      className="fixed inset-0 bg-black/30 flex flex-col items-center justify-center p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) onDismiss();
       }}
     >
-      <div className="h-[700px] w-full max-w-3xl bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-auto">
+      <div className="h-[90vh] sm:h-[700px] w-full max-w-3xl bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-auto">
         {children}
       </div>
     </div>

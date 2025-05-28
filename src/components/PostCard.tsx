@@ -51,7 +51,7 @@ export default function PostCard({
         </div>
 
         {/* 제목 */}
-        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+        <h3 className="text-base font-bold text-gray-900 dark:text-gray-100 mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 sm:text-xl">
           {title}
         </h3>
 
