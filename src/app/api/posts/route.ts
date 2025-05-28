@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
 export async function GET() {
   try {
+    const supabase = createRouteHandlerClient({ cookies: () => cookies() });
     const { data: posts, error } = await supabase
       .from("posts")
       .select("*")
@@ -22,20 +24,28 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const session = await supabase.auth.getSession();
-    if (!session.data.session) {
+    const supabase = createRouteHandlerClient({ cookies: () => cookies() });
+
+    // 현재 로그인한 사용자 정보 가져오기
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
       return NextResponse.json(
-        { error: "인증되지 않은 사용자입니다." },
+        { error: "로그인이 필요합니다." },
         { status: 401 }
       );
     }
 
     const data = await request.json();
+
     const { data: post, error } = await supabase
       .from("posts")
       .insert({
         ...data,
-        user_id: session.data.session.user.id,
+        user_id: user.id,
       })
       .select()
       .single();
