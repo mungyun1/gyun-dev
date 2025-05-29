@@ -16,7 +16,7 @@ async function getPost(slug: string) {
     .select(
       `
       *,
-      categories:categories_id (
+      categories:category_id (
         id,
         name
       )

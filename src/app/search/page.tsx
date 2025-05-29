@@ -1,27 +1,6 @@
-import { supabase } from "@/lib/supabase";
+import { getPosts } from "@/lib/posts";
 import Link from "next/link";
 import SearchInput from "./SearchInput";
-
-interface Post {
-  slug: string;
-  title: string;
-  summary: string;
-  created_at: string;
-}
-
-async function getPosts() {
-  const { data, error } = await supabase
-    .from("posts")
-    .select("slug, title, summary, created_at")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Error fetching posts:", error);
-    return [];
-  }
-
-  return data || [];
-}
 
 export default async function SearchPage({
   searchParams,

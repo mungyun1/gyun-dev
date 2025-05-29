@@ -1,28 +1,12 @@
 import { Metadata } from "next";
 import PostList from "@/components/PostList";
 import Link from "next/link";
+import { getPosts } from "@/lib/posts";
 
 export const metadata: Metadata = {
   title: "Posts | Gyun's Blog",
   description: "게시물 목록",
 };
-
-async function getPosts() {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/posts`, {
-      cache: "no-store",
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch posts");
-    }
-
-    return res.json();
-  } catch (error) {
-    console.error("Error fetching posts:", error);
-    return [];
-  }
-}
 
 export default async function PostsPage() {
   const posts = await getPosts();

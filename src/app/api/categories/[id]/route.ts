@@ -28,7 +28,7 @@ export async function DELETE(
     const { data: posts, error: postsError } = await supabase
       .from("posts")
       .select("id")
-      .eq("categories_id", id);
+      .eq("category_id", id);
 
     if (postsError) {
       throw postsError;

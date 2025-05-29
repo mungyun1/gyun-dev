@@ -3,20 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-interface Post {
-  title: string;
-  date: string;
-  slug: string;
-}
-
-interface Category {
-  id: string;
-  name: string;
-  slug: string;
-  posts?: Post[];
-  postCount?: number;
-}
+import { Category, CategoryPost, deleteCategory } from "@/lib/categories";
 
 interface CategoryListProps {
   categories: Category[];
@@ -37,14 +24,7 @@ export default function CategoryList({
 
     setIsDeleting(categoryId);
     try {
-      const response = await fetch(`/api/categories/${categoryId}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("카테고리 삭제에 실패했습니다.");
-      }
-
+      await deleteCategory(categoryId);
       router.refresh();
     } catch (error) {
       console.error("Error deleting category:", error);
@@ -67,17 +47,11 @@ export default function CategoryList({
                       {category.name}
                     </p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Slug: {category.slug}
+                      Posts: {category.post_ids?.length || 0}
                     </p>
                   </div>
                 </div>
                 <div className="ml-6 flex items-center space-x-3">
-                  <Link
-                    href={`/admin/categories/${category.id}`}
-                    className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-                  >
-                    수정
-                  </Link>
                   <button
                     onClick={() => handleDelete(category.id)}
                     disabled={isDeleting === category.id}
@@ -113,12 +87,12 @@ export default function CategoryList({
           <div className="flex items-center gap-2 mb-4">
             <h2 className="text-2xl font-bold">{category.name}</h2>
             <span className="text-sm text-gray-500">
-              ({category.postCount || 0} Posts)
+              ({category.post_ids?.length || 0} Posts)
             </span>
           </div>
           {category.posts && category.posts.length > 0 ? (
             <ul className="space-y-2">
-              {category.posts.map((post) => (
+              {category.posts.map((post: CategoryPost) => (
                 <li key={post.slug} className="flex items-center gap-2">
                   <Link
                     href={`/posts/${post.slug}`}

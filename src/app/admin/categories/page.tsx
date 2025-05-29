@@ -1,31 +1,12 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import CategoryList from "@/components/CategoryList";
+import { getCategories } from "@/lib/categories";
 
 export const metadata: Metadata = {
   title: "Categories | Gyun's Blog",
   description: "카테고리 관리",
 };
-
-async function getCategories() {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/categories`,
-      {
-        cache: "no-store",
-      }
-    );
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch categories");
-    }
-
-    return res.json();
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-    return [];
-  }
-}
 
 export default async function CategoriesPage() {
   const categories = await getCategories();
@@ -56,7 +37,7 @@ export default async function CategoriesPage() {
             새 카테고리 추가
           </Link>
         </div>
-        <CategoryList categories={categories} />
+        <CategoryList categories={categories} isAdmin={true} />
       </div>
     </div>
   );

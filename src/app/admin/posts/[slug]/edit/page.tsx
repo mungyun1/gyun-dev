@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import PostEditor from "@/components/PostEditor";
 import { notFound } from "next/navigation";
+import { getPost } from "@/lib/posts";
 
 export const metadata: Metadata = {
   title: "Edit Post | Gyun's Blog",
@@ -13,32 +14,14 @@ interface Props {
   };
 }
 
-async function getPost(slug: string) {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/posts/${slug}`,
-      {
-        cache: "no-store",
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch post");
-    }
-
-    return response.json();
-  } catch (error) {
-    console.error("Error fetching post:", error);
-    notFound();
-  }
-}
-
 export default async function EditPostPage({ params }: Props) {
   const post = await getPost(params.slug);
 
   if (!post) {
     notFound();
   }
+
+  console.log("서버 시작");
 
   return (
     <div className="min-h-screen dark:bg-slate-900 py-6">

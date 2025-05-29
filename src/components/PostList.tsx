@@ -4,14 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { formatDate } from "@/utils/date";
 import { useRouter } from "next/navigation";
-
-interface Post {
-  id: number;
-  title: string;
-  summary: string;
-  slug: string;
-  created_at: string;
-}
+import { Post, deletePost } from "@/lib/posts";
 
 interface PostListProps {
   posts: Post[];
@@ -28,14 +21,7 @@ export default function PostList({ posts }: PostListProps) {
 
     try {
       setIsDeleting(true);
-      const response = await fetch(`/api/posts/${slug}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete post");
-      }
-
+      await deletePost(slug);
       router.refresh();
     } catch (error) {
       console.error("Error deleting post:", error);

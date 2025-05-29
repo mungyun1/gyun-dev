@@ -4,19 +4,12 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import useStore from "@/store/useStore";
+import { createPost, updatePost, Post } from "@/lib/posts";
 
 const MDEditor = dynamic(
   () => import("@uiw/react-md-editor").then((mod) => mod.default),
   { ssr: false }
 );
-
-interface Post {
-  id?: number;
-  title: string;
-  content: string;
-  summary: string;
-  slug: string;
-}
 
 interface PostEditorProps {
   initialData?: Post;
@@ -25,10 +18,10 @@ interface PostEditorProps {
 export default function PostEditor({ initialData }: PostEditorProps) {
   const router = useRouter();
   const { theme } = useStore();
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [summary, setSummary] = useState("");
-  const [slug, setSlug] = useState("");
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [content, setContent] = useState(initialData?.content || "");
+  const [summary, setSummary] = useState(initialData?.summary || "");
+  const [slug, setSlug] = useState(initialData?.slug || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 초기 데이터 설정
@@ -47,32 +40,22 @@ export default function PostEditor({ initialData }: PostEditorProps) {
 
     try {
       setIsSubmitting(true);
-      const method = initialData ? "PUT" : "POST";
-      const url = initialData ? `/api/posts/${initialData.slug}` : "/api/posts";
 
-      const res = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          content,
-          summary,
-          slug,
-        }),
-      });
+      const data = { title, content, summary, slug };
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "게시물 작성에 실패했습니다.");
+      if (initialData) {
+        await updatePost(initialData.slug, data);
+      } else {
+        await createPost(data);
       }
 
       router.push("/admin/posts");
       router.refresh();
     } catch (error) {
-      console.error("Error:", error);
-      alert(error instanceof Error ? error.message : "오류가 발생했습니다.");
+      console.error("Error saving post:", error);
+      alert(
+        error instanceof Error ? error.message : "게시물 저장에 실패했습니다."
+      );
     } finally {
       setIsSubmitting(false);
     }

@@ -2,13 +2,24 @@ import { NextResponse } from "next/server";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const ids = searchParams.get("ids");
+
     const supabase = createRouteHandlerClient({ cookies: () => cookies() });
-    const { data: posts, error } = await supabase
-      .from("posts")
-      .select("*")
-      .order("created_at", { ascending: false });
+    let query = supabase.from("posts").select("*");
+
+    // ids 파라미터가 있으면 해당 ID들의 포스트만 조회
+    if (ids) {
+      const postIds = ids.split(",").map(Number);
+      query = query.in("id", postIds);
+    }
+
+    // 생성일 기준 내림차순 정렬
+    query = query.order("created_at", { ascending: false });
+
+    const { data: posts, error } = await query;
 
     if (error) throw error;
 

@@ -1,28 +1,5 @@
-import { supabase } from "@/lib/supabase";
 import PostCard from "@/components/PostCard";
-
-async function getPosts() {
-  const { data: posts, error } = await supabase
-    .from("posts")
-    .select(
-      `
-      *,
-      categories:categories_id (
-        name
-      )
-    `
-    )
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Error fetching posts:", error);
-    return [];
-  }
-
-  // 날짜 데이터 확인
-  console.log("First post created_at:", posts[0]?.created_at);
-  return posts;
-}
+import { getPosts, Post } from "@/lib/posts";
 
 export default async function Home() {
   const posts = await getPosts();
@@ -36,7 +13,7 @@ export default async function Home() {
       </div>
       <div className="grid gap-4 sm:gap-6 md:gap-8">
         {posts.length > 0 ? (
-          posts.map((post) => (
+          posts.map((post: Post) => (
             <PostCard
               key={post.slug}
               title={post.title}
