@@ -12,8 +12,8 @@ export default async function CategoriesPage() {
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">
-        카테고리
+      <h1 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900 dark:text-white">
+        There are {categories.length} categories.
       </h1>
       <CategoryList categories={categories} />
     </div>

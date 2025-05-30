@@ -5,13 +5,13 @@ export default async function Home() {
   const posts = await getPosts();
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <main className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
       <div className="mb-12">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
           Recent Posts
         </h1>
-        <p className="text-gray-600 dark:text-gray-300">
-          개발과 관련된 이야기들을 기록합니다
+        <p className="text-gray-600 dark:text-gray-300 text-xl">
+          I write about development and other things😎
         </p>
       </div>
 

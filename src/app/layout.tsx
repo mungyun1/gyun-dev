@@ -83,7 +83,7 @@ export default async function RootLayout({
                         </Link>
                       </div>
                       <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                        Mun Gyun
+                        Mun Gyun🧑‍💻
                       </h1>
                       <p className="text-sm text-gray-600 dark:text-gray-300">
                         Think Different

@@ -76,7 +76,7 @@ const getTagStyle = (tagName: string): string => {
 export default function TagList({ tags }: TagListProps) {
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-8 sm:text-3xl">
+      <h1 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900 dark:text-white">
         There are {tags.length} tags.
       </h1>
       <div className="flex flex-wrap gap-3">

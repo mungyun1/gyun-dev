@@ -21,7 +21,7 @@ export default function Modal({ children }: ModalProps) {
         if (e.target === e.currentTarget) onDismiss();
       }}
     >
-      <div className="h-[90vh] sm:h-[700px] w-full max-w-3xl bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-auto relative">
+      <div className="h-[90vh] sm:h-[700px] w-full max-w-4xl bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-auto relative">
         <button
           onClick={onDismiss}
           className="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
