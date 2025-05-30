@@ -7,6 +7,7 @@ export interface Post {
   summary: string;
   content: string;
   created_at: string;
+  thumbnail_url?: string;
   categories: {
     name: string;
   };
@@ -17,6 +18,7 @@ interface PostData {
   content: string;
   summary: string;
   slug: string;
+  thumbnail_url?: string;
 }
 
 export async function createPost(data: PostData): Promise<Post> {

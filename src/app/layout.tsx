@@ -123,7 +123,7 @@ export default async function RootLayout({
 
                 {/* 메인 콘텐츠 영역 */}
                 <main className="w-full min-h-[calc(100vh-4rem)] mt-16 px-4 py-6 md:px-8 md:ml-64 xl:mr-80">
-                  <div className="max-w-4xl mx-auto">{children}</div>
+                  <div className="max-w-7xl mx-auto">{children}</div>
                 </main>
 
                 {/* 오른쪽 사이드바 - 1200px 이상에서만 표시 */}
