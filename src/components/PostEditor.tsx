@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import useStore from "@/store/useStore";
@@ -29,6 +29,7 @@ export default function PostEditor({ initialData }: PostEditorProps) {
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const contentImageInputRef = useRef<HTMLInputElement>(null);
 
   // 초기 데이터 설정
   useEffect(() => {
@@ -41,31 +42,40 @@ export default function PostEditor({ initialData }: PostEditorProps) {
     }
   }, [initialData]);
 
+  const uploadImage = async (file: File, path: string) => {
+    if (file.size > 5 * 1024 * 1024) {
+      throw new Error("파일 크기는 5MB를 초과할 수 없습니다.");
+    }
+
+    if (!file.type.startsWith("image/")) {
+      throw new Error("이미지 파일만 업로드할 수 있습니다.");
+    }
+
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Math.random()
+      .toString(36)
+      .substring(2)}_${Date.now()}.${fileExt}`;
+    const filePath = `${path}/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("blog")
+      .upload(filePath, file);
+
+    if (uploadError) throw uploadError;
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("blog").getPublicUrl(filePath);
+
+    return publicUrl;
+  };
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     try {
       setIsUploading(true);
-
-      // 파일 크기 체크 (5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert("파일 크기는 5MB를 초과할 수 없습니다.");
-        return;
-      }
-
-      // 이미지 파일 타입 체크
-      if (!file.type.startsWith("image/")) {
-        alert("이미지 파일만 업로드할 수 있습니다.");
-        return;
-      }
-
-      // 파일명을 유니크하게 생성
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${Math.random()
-        .toString(36)
-        .substring(2)}_${Date.now()}.${fileExt}`;
-      const filePath = `thumbnails/${fileName}`;
 
       // 기존 이미지가 있다면 삭제
       if (thumbnailUrl) {
@@ -75,24 +85,53 @@ export default function PostEditor({ initialData }: PostEditorProps) {
         }
       }
 
-      // 새 이미지 업로드
-      const { error: uploadError, data } = await supabase.storage
-        .from("blog")
-        .upload(filePath, file);
-
-      if (uploadError) throw uploadError;
-
-      // 업로드된 이미지의 공개 URL 가져오기
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("blog").getPublicUrl(filePath);
-
+      const publicUrl = await uploadImage(file, "thumbnails");
       setThumbnailUrl(publicUrl);
     } catch (error) {
       console.error("Error uploading image:", error);
-      alert("이미지 업로드에 실패했습니다.");
+      alert(
+        error instanceof Error ? error.message : "이미지 업로드에 실패했습니다."
+      );
     } finally {
       setIsUploading(false);
+    }
+  };
+
+  const handleContentImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setIsUploading(true);
+      const publicUrl = await uploadImage(file, "content");
+
+      // 현재 커서 위치에 이미지 마크다운 삽입
+      const imageMarkdown = `![${file.name}](${publicUrl})`;
+      const textArea = document.querySelector(
+        ".w-md-editor-text-input"
+      ) as HTMLTextAreaElement;
+
+      if (textArea) {
+        const start = textArea.selectionStart;
+        const end = textArea.selectionEnd;
+        const newContent =
+          content.substring(0, start) + imageMarkdown + content.substring(end);
+        setContent(newContent);
+      } else {
+        setContent(content + "\n" + imageMarkdown);
+      }
+    } catch (error) {
+      console.error("Error uploading content image:", error);
+      alert(
+        error instanceof Error ? error.message : "이미지 업로드에 실패했습니다."
+      );
+    } finally {
+      setIsUploading(false);
+      if (contentImageInputRef.current) {
+        contentImageInputRef.current.value = "";
+      }
     }
   };
 
@@ -230,12 +269,32 @@ export default function PostEditor({ initialData }: PostEditorProps) {
       </div>
 
       <div>
-        <label
-          htmlFor="content"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-        >
-          내용
-        </label>
+        <div className="flex justify-between items-center mb-2">
+          <label
+            htmlFor="content"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
+            내용
+          </label>
+          <div>
+            <input
+              type="file"
+              id="content-image"
+              accept="image/*"
+              onChange={handleContentImageUpload}
+              className="hidden"
+              ref={contentImageInputRef}
+            />
+            <label
+              htmlFor="content-image"
+              className={`inline-flex items-center px-3 py-1 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer ${
+                isUploading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {isUploading ? "업로드 중..." : "이미지 삽입"}
+            </label>
+          </div>
+        </div>
         <div data-color-mode={theme}>
           <MDEditor
             value={content}
