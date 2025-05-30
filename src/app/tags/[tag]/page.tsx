@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import PostList from "@/components/PostList";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { Post } from "@/lib/posts";
 
 interface Props {
   params: {
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-async function getPostsByTag(tag: string) {
+async function getPostsByTag(tag: string): Promise<Post[]> {
   const { data: posts, error } = await supabase
     .from("posts")
     .select("*")
@@ -71,7 +72,7 @@ export default async function TagPage({ params }: Props) {
         <p className="mt-3 text-base opacity-90">{posts.length}개의 포스트</p>
       </div>
 
-      <PostList posts={posts} />
+      <PostList posts={posts} hideActions={true} />
     </div>
   );
 }

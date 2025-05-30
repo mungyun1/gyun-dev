@@ -7,7 +7,8 @@ export async function DELETE(
   context: { params: { id: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient({ cookies: () => cookies() });
+    const cookieStore = cookies();
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
     const { id } = context.params;
 
     // 카테고리 존재 여부 확인

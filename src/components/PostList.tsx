@@ -9,9 +9,13 @@ import { Post, deletePost } from "@/lib/posts";
 
 interface PostListProps {
   posts: Post[];
+  hideActions?: boolean;
 }
 
-export default function PostList({ posts }: PostListProps) {
+export default function PostList({
+  posts,
+  hideActions = false,
+}: PostListProps) {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -33,13 +37,13 @@ export default function PostList({ posts }: PostListProps) {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 ">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       {posts.map((post) => (
         <article
           key={post.id}
           className="bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
         >
-          <Link href={`/posts/${post.slug}`} className="block">
+          <Link href={`/posts/${post.slug}`}>
             <div className="relative h-48 w-full">
               <Image
                 src={post.thumbnail_url || "/opengraph-image"}
@@ -60,24 +64,26 @@ export default function PostList({ posts }: PostListProps) {
                 <div className="text-xs text-gray-500 dark:text-gray-400">
                   {formatDate(post.created_at)}
                 </div>
-                <div className="flex gap-2">
-                  <Link
-                    href={`/admin/posts/${post.slug}/edit`}
-                    className="inline-flex items-center px-2 py-1 text-xs border border-gray-300 rounded text-gray-700 dark:text-gray-200 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
-                  >
-                    수정
-                  </Link>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleDelete(post.slug);
-                    }}
-                    disabled={isDeleting}
-                    className="inline-flex items-center px-2 py-1 text-xs border border-red-300 rounded text-red-700 dark:text-red-400 bg-white dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    삭제
-                  </button>
-                </div>
+                {!hideActions && (
+                  <div className="flex gap-2">
+                    <Link
+                      href={`/admin/posts/${post.slug}/edit`}
+                      className="inline-flex items-center px-2 py-1 text-xs border border-gray-300 rounded text-gray-700 dark:text-gray-200 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+                    >
+                      수정
+                    </Link>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleDelete(post.slug);
+                      }}
+                      disabled={isDeleting}
+                      className="inline-flex items-center px-2 py-1 text-xs border border-red-300 rounded text-red-700 dark:text-red-400 bg-white dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </Link>

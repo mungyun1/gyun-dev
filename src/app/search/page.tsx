@@ -2,12 +2,19 @@ import { getPosts } from "@/lib/posts";
 import Link from "next/link";
 import SearchInput from "./SearchInput";
 
+interface Post {
+  slug: string;
+  title: string;
+  summary: string;
+  created_at: string;
+}
+
 export default async function SearchPage({
   searchParams,
 }: {
   searchParams: { q?: string };
 }) {
-  const posts = await getPosts();
+  const posts = (await getPosts()) as Post[];
   const searchTerm = searchParams.q || "";
 
   const filteredPosts = posts.filter(
@@ -25,7 +32,7 @@ export default async function SearchPage({
           <Link
             key={post.slug}
             href={`/posts/${post.slug}`}
-            className="block bg-white dark:bg-slate-800 rounded-lg p-6 hover:shadow-md transition-shadow"
+            className="block bg-white dark:bg-slate-800 rounded-lg p-6 hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
           >
             <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
               {post.title}
