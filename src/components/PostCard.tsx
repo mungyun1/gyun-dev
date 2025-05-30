@@ -34,7 +34,7 @@ export default function PostCard({
             className="object-cover transform group-hover:scale-105 transition-transform duration-300"
             priority={true}
           />
-          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-colors duration-300 group-hover:shadow-[inset_0_0_20px_rgba(0,0,0,0.3)]" />
+          <div className="absolute inset-0 group-hover:bg-black/20 transition-colors duration-300 group-hover:shadow-[inset_0_0_20px_rgba(0,0,0,0.3)]" />
           {categories?.name && (
             <span className="absolute top-4 left-4 px-3 py-1 bg-blue-500/80 text-white text-sm rounded-full backdrop-blur-sm">
               {categories.name}

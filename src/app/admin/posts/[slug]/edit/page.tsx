@@ -15,13 +15,15 @@ interface Props {
 }
 
 export default async function EditPostPage({ params }: Props) {
+  if (!params?.slug) {
+    notFound();
+  }
+
   const post = await getPost(params.slug);
 
   if (!post) {
     notFound();
   }
-
-  console.log("서버 시작");
 
   return (
     <div className="min-h-screen dark:bg-slate-900 py-6">

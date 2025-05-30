@@ -8,7 +8,9 @@ export async function GET(
 ) {
   try {
     const cookieStore = cookies();
-    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+    const supabase = createRouteHandlerClient({
+      cookies: () => cookieStore,
+    });
     const { slug } = await context.params;
 
     // 게시물 조회
@@ -45,7 +47,9 @@ export async function PUT(
 ) {
   try {
     const cookieStore = cookies();
-    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+    const supabase = createRouteHandlerClient({
+      cookies: () => cookieStore,
+    });
     const { slug } = await context.params;
     const data = await request.json();
 
@@ -57,6 +61,7 @@ export async function PUT(
         content: data.content,
         summary: data.summary,
         slug: data.slug,
+        thumbnail_url: data.thumbnail_url,
         updated_at: new Date().toISOString(),
       })
       .eq("slug", slug)
@@ -90,7 +95,9 @@ export async function DELETE(
 ) {
   try {
     const cookieStore = cookies();
-    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+    const supabase = createRouteHandlerClient({
+      cookies: () => cookieStore,
+    });
     const { slug } = await context.params;
 
     // 게시물 조회

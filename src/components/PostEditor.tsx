@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import useStore from "@/store/useStore";
 import { createPost, updatePost, Post } from "@/lib/posts";
+import { supabase } from "@/lib/supabase";
+import Image from "next/image";
 
 const MDEditor = dynamic(
   () => import("@uiw/react-md-editor").then((mod) => mod.default),
@@ -22,7 +24,11 @@ export default function PostEditor({ initialData }: PostEditorProps) {
   const [content, setContent] = useState(initialData?.content || "");
   const [summary, setSummary] = useState(initialData?.summary || "");
   const [slug, setSlug] = useState(initialData?.slug || "");
+  const [thumbnailUrl, setThumbnailUrl] = useState(
+    initialData?.thumbnail_url || ""
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   // 초기 데이터 설정
   useEffect(() => {
@@ -31,8 +37,64 @@ export default function PostEditor({ initialData }: PostEditorProps) {
       setContent(initialData.content);
       setSummary(initialData.summary);
       setSlug(initialData.slug);
+      setThumbnailUrl(initialData.thumbnail_url || "");
     }
   }, [initialData]);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setIsUploading(true);
+
+      // 파일 크기 체크 (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert("파일 크기는 5MB를 초과할 수 없습니다.");
+        return;
+      }
+
+      // 이미지 파일 타입 체크
+      if (!file.type.startsWith("image/")) {
+        alert("이미지 파일만 업로드할 수 있습니다.");
+        return;
+      }
+
+      // 파일명을 유니크하게 생성
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Math.random()
+        .toString(36)
+        .substring(2)}_${Date.now()}.${fileExt}`;
+      const filePath = `thumbnails/${fileName}`;
+
+      // 기존 이미지가 있다면 삭제
+      if (thumbnailUrl) {
+        const oldPath = thumbnailUrl.split("/").pop();
+        if (oldPath) {
+          await supabase.storage.from("blog").remove([`thumbnails/${oldPath}`]);
+        }
+      }
+
+      // 새 이미지 업로드
+      const { error: uploadError, data } = await supabase.storage
+        .from("blog")
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      // 업로드된 이미지의 공개 URL 가져오기
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("blog").getPublicUrl(filePath);
+
+      setThumbnailUrl(publicUrl);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("이미지 업로드에 실패했습니다.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +103,13 @@ export default function PostEditor({ initialData }: PostEditorProps) {
     try {
       setIsSubmitting(true);
 
-      const data = { title, content, summary, slug };
+      const data = {
+        title,
+        content,
+        summary,
+        slug,
+        thumbnail_url: thumbnailUrl,
+      };
 
       if (initialData) {
         await updatePost(initialData.slug, data);
@@ -78,6 +146,53 @@ export default function PostEditor({ initialData }: PostEditorProps) {
           className="mt-1 h-8 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-600 dark:text-white sm:text-sm"
           required
         />
+      </div>
+
+      <div>
+        <label
+          htmlFor="thumbnail"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+        >
+          썸네일 이미지
+        </label>
+        <div className="mt-1 flex items-center space-x-4">
+          {thumbnailUrl && (
+            <div className="relative w-32 h-32 rounded-lg overflow-hidden">
+              <Image
+                src={thumbnailUrl}
+                alt="Thumbnail"
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
+          <div>
+            <input
+              type="file"
+              id="thumbnail"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden"
+            />
+            <label
+              htmlFor="thumbnail"
+              className={`inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer ${
+                isUploading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {isUploading ? "업로드 중..." : "이미지 업로드"}
+            </label>
+            {thumbnailUrl && (
+              <button
+                type="button"
+                onClick={() => setThumbnailUrl("")}
+                className="ml-2 text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+              >
+                삭제
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
       <div>
@@ -141,7 +256,7 @@ export default function PostEditor({ initialData }: PostEditorProps) {
         </button>
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || isUploading}
           className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting
