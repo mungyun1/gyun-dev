@@ -13,6 +13,11 @@ const MDEditor = dynamic(
   { ssr: false }
 );
 
+interface Category {
+  id: number;
+  name: string;
+}
+
 interface PostEditorProps {
   initialData?: Post;
 }
@@ -27,9 +32,32 @@ export default function PostEditor({ initialData }: PostEditorProps) {
   const [thumbnailUrl, setThumbnailUrl] = useState(
     initialData?.thumbnail_url || ""
   );
+  const [categoryId, setCategoryId] = useState<number | null>(
+    initialData?.category_id || null
+  );
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const contentImageInputRef = useRef<HTMLInputElement>(null);
+
+  // 카테고리 목록 가져오기
+  useEffect(() => {
+    async function fetchCategories() {
+      const { data, error } = await supabase
+        .from("categories")
+        .select("id, name")
+        .order("name");
+
+      if (error) {
+        console.error("Error fetching categories:", error);
+        return;
+      }
+
+      setCategories(data || []);
+    }
+
+    fetchCategories();
+  }, []);
 
   // 초기 데이터 설정
   useEffect(() => {
@@ -39,6 +67,7 @@ export default function PostEditor({ initialData }: PostEditorProps) {
       setSummary(initialData.summary);
       setSlug(initialData.slug);
       setThumbnailUrl(initialData.thumbnail_url || "");
+      setCategoryId(initialData.category_id);
     }
   }, [initialData]);
 
@@ -148,6 +177,7 @@ export default function PostEditor({ initialData }: PostEditorProps) {
         summary,
         slug,
         thumbnail_url: thumbnailUrl,
+        category_id: categoryId,
       };
 
       if (initialData) {
@@ -185,6 +215,31 @@ export default function PostEditor({ initialData }: PostEditorProps) {
           className="mt-1 h-8 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-600 dark:text-white sm:text-sm"
           required
         />
+      </div>
+
+      <div>
+        <label
+          htmlFor="category"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+        >
+          카테고리
+        </label>
+        <select
+          id="category"
+          value={categoryId || ""}
+          onChange={(e) =>
+            setCategoryId(e.target.value ? Number(e.target.value) : null)
+          }
+          className="mt-1 h-8 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-600 dark:text-white sm:text-sm"
+          required
+        >
+          <option value="">카테고리 선택</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div>

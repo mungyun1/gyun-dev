@@ -1,35 +1,11 @@
 import Link from "next/link";
-import { createServerSupabaseClient } from "@/lib/supabase";
-import { notFound } from "next/navigation";
 import MarkdownContent from "@/components/MarkdownContent";
+import { getPost } from "@/lib/posts";
 
 interface PostPageProps {
   params: {
     slug: string;
   };
-}
-
-async function getPost(slug: string) {
-  const supabase = createServerSupabaseClient();
-  const { data: post, error } = await supabase
-    .from("posts")
-    .select(
-      `
-      *,
-      categories:category_id (
-        id,
-        name
-      )
-    `
-    )
-    .eq("slug", slug)
-    .single();
-
-  if (error) {
-    notFound();
-  }
-
-  return post;
 }
 
 export default async function PostPage({ params }: PostPageProps) {

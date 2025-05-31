@@ -11,6 +11,7 @@ export interface Post {
   categories: {
     name: string;
   };
+  category_id: number;
 }
 
 interface PostData {
