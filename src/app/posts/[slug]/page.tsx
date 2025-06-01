@@ -9,7 +9,8 @@ interface PostPageProps {
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = await getPost(params.slug);
+  const { slug } = await params;
+  const post = await getPost(slug);
 
   return (
     <main className="p-4 sm:p-6 md:p-8 lg:p-12">

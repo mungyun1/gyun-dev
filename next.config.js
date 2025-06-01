@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   images: {
     domains: ["jnqnxyjduaqlurkxszil.supabase.co"],
   },
@@ -10,7 +10,9 @@ module.exports = {
     });
     return config;
   },
-  experimental: {
-    appDir: true,
+  eslint: {
+    dirs: ["pages", "components", "lib", "utils", "hooks", "app"],
   },
 };
+
+module.exports = nextConfig;

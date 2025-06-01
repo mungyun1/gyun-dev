@@ -1,17 +1,15 @@
 import { NextResponse } from "next/server";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { cookies as getCookies } from "next/headers";
 
 export async function GET(
   request: Request,
   context: { params: { slug: string } }
 ) {
   try {
-    const cookieStore = cookies();
-    const supabase = createRouteHandlerClient({
-      cookies: () => cookieStore,
-    });
-    const { slug } = await context.params;
+    const cookieStore = getCookies();
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+    const { slug } = context.params;
 
     // 게시물 조회
     const { data: post, error } = await supabase
@@ -46,11 +44,9 @@ export async function PUT(
   context: { params: { slug: string } }
 ) {
   try {
-    const cookieStore = cookies();
-    const supabase = createRouteHandlerClient({
-      cookies: () => cookieStore,
-    });
-    const { slug } = await context.params;
+    const cookieStore = getCookies();
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+    const { slug } = context.params;
     const data = await request.json();
 
     // 게시물 수정
@@ -94,11 +90,9 @@ export async function DELETE(
   context: { params: { slug: string } }
 ) {
   try {
-    const cookieStore = cookies();
-    const supabase = createRouteHandlerClient({
-      cookies: () => cookieStore,
-    });
-    const { slug } = await context.params;
+    const cookieStore = getCookies();
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+    const { slug } = context.params;
 
     // 게시물 조회
     const { data: post, error: fetchError } = await supabase

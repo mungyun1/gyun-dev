@@ -8,18 +8,19 @@ export const metadata: Metadata = {
   description: "게시물 수정",
 };
 
-interface Props {
+interface PageProps {
   params: {
     slug: string;
   };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default async function EditPostPage({ params }: Props) {
-  if (!params?.slug) {
-    notFound();
-  }
-
-  const post = await getPost(params.slug);
+export default async function EditPostPage({
+  params,
+  searchParams,
+}: PageProps) {
+  const { slug } = params;
+  const post = await getPost(slug);
 
   if (!post) {
     notFound();

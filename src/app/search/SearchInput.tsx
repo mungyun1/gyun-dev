@@ -20,7 +20,12 @@ export default function SearchInput() {
 
   // URL 업데이트
   useEffect(() => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams();
+    // 현재 searchParams의 모든 값을 복사
+    searchParams.forEach((value, key) => {
+      params.append(key, value);
+    });
+
     if (debouncedTerm) {
       params.set("q", debouncedTerm);
     } else {

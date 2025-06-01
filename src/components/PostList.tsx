@@ -75,7 +75,7 @@ export default function PostList({
               {!hideActions && (
                 <div className="flex gap-2 action-buttons">
                   <Link
-                    href={`/admin/posts/${post.slug}/edit`}
+                    href={`/admin/posts/edit/${post.slug}`}
                     className="inline-flex items-center px-2 py-1 text-xs border border-gray-300 rounded text-gray-700 dark:text-gray-200 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
                     onClick={(e) => e.stopPropagation()}
                   >

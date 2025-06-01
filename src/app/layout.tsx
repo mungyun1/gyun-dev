@@ -42,6 +42,9 @@ async function getRecentPosts() {
 export const metadata: Metadata = {
   title: "Gyun's Dev",
   description: "문균의 개발 블로그",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+  ),
   icons: {
     icon: "/favicon.ico",
   },

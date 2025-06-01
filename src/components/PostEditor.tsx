@@ -7,6 +7,7 @@ import useStore from "@/store/useStore";
 import { createPost, updatePost, Post } from "@/lib/posts";
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
+import { getCategories } from "@/lib/categories";
 
 const MDEditor = dynamic(
   () => import("@uiw/react-md-editor").then((mod) => mod.default),
@@ -42,20 +43,15 @@ export default function PostEditor({ initialData }: PostEditorProps) {
 
   // 카테고리 목록 가져오기
   useEffect(() => {
-    async function fetchCategories() {
-      const { data, error } = await supabase
-        .from("categories")
-        .select("id, name")
-        .order("name");
-
-      if (error) {
-        console.error("Error fetching categories:", error);
-        return;
-      }
-
-      setCategories(data || []);
-    }
-
+    const fetchCategories = async () => {
+      const data = await getCategories();
+      setCategories(
+        (data || []).map((cat) => ({
+          ...cat,
+          id: Number(cat.id),
+        }))
+      );
+    };
     fetchCategories();
   }, []);
 

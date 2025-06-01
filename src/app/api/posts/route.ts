@@ -8,9 +8,7 @@ export async function GET(request: Request) {
     const ids = searchParams.get("ids");
 
     const cookieStore = cookies();
-    const supabase = createRouteHandlerClient({
-      cookies: () => cookieStore,
-    });
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
     let query = supabase.from("posts").select("*");
 
@@ -40,9 +38,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const cookieStore = cookies();
-    const supabase = createRouteHandlerClient({
-      cookies: () => cookieStore,
-    });
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
     // 현재 로그인한 사용자 정보 가져오기
     const {
