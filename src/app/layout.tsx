@@ -7,8 +7,8 @@ import Header from "@/components/Header";
 import SocialLinks from "@/components/SocialLinks";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "next-themes";
-import { supabase } from "@/lib/supabase";
 import TopTags from "@/components/TopTags";
+import { getPosts } from "@/lib/posts";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,31 +19,11 @@ interface Post {
   created_at: string;
 }
 
-// 최근 게시물을 가져오는 함수
-async function getRecentPosts() {
-  const threeDaysAgo = new Date();
-  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-
-  const { data: posts, error } = await supabase
-    .from("posts")
-    .select("slug, title, summary, created_at")
-    .gte("created_at", threeDaysAgo.toISOString())
-    .order("created_at", { ascending: false })
-    .limit(5);
-
-  if (error) {
-    console.error("Error fetching recent posts:", error);
-    return [];
-  }
-
-  return posts;
-}
-
 export const metadata: Metadata = {
   title: "Gyun's Dev",
   description: "문균의 개발 블로그",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
   ),
   icons: {
     icon: "/favicon.ico",
@@ -57,7 +37,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   modal: React.ReactNode;
 }) {
-  const recentPosts = await getRecentPosts();
+  const recentPosts = await getPosts();
 
   return (
     <html lang="ko" suppressHydrationWarning>
