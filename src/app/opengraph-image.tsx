@@ -43,7 +43,7 @@ export default function DefaultImage() {
             marginBottom: 20,
           }}
         >
-          GYUN.DEV
+          GYUN-DEV
         </div>
         <div
           style={{
@@ -51,7 +51,7 @@ export default function DefaultImage() {
             color: "#9CA3AF",
           }}
         >
-          개발자의 기록
+          뭉균의 개발기록
         </div>
       </div>
     ),
