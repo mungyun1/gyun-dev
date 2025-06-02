@@ -16,7 +16,7 @@ export default function Modal({ children }: ModalProps) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/30 flex flex-col items-center justify-center p-4"
+      className="fixed inset-0 z-9999 bg-black/30 flex flex-col items-center justify-center px-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) onDismiss();
       }}

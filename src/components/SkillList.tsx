@@ -52,21 +52,23 @@ export default function SkillList({ skills }: SkillListProps) {
   }, {} as Record<string, Skill[]>);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 min-[400px]:space-y-8">
       {Object.entries(groupedSkills).map(([category, skills]) => (
-        <div key={category} className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-700 dark:text-white">
+        <div key={category} className="space-y-2 min-[400px]:space-y-4">
+          <h3 className="text-base min-[400px]:text-lg font-semibold text-gray-700 dark:text-white">
             {category}
           </h3>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2 min-[400px]:gap-3">
             {skills.map((skill) => (
               <div
                 key={skill.name}
-                className={`inline-flex items-center px-4 py-2 rounded-2xl transition-colors ${getSkillStyle(
+                className={`inline-flex items-center px-2 min-[400px]:px-4 py-1 min-[400px]:py-2 rounded-xl min-[400px]:rounded-2xl transition-colors ${getSkillStyle(
                   skill.name
                 )}`}
               >
-                <span className="font-medium">{skill.name}</span>
+                <span className="text-sm min-[400px]:text-base font-medium">
+                  {skill.name}
+                </span>
               </div>
             ))}
           </div>

@@ -52,7 +52,7 @@ export default function AboutPage() {
     <div className="w-full max-w-4xl mx-auto px-2 min-[400px]:px-3 sm:px-4 py-3 min-[400px]:py-4 sm:py-6 md:py-8 space-y-8 min-[400px]:space-y-12 sm:space-y-16 md:space-y-20">
       {/* 소개 섹션 */}
       <section className="space-y-4 min-[400px]:space-y-6 sm:space-y-8 md:space-y-12">
-        <h1 className="text-lg min-[400px]:text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 text-transparent bg-clip-text leading-tight">
+        <h1 className="text-sm min-[400px]:text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 text-transparent bg-clip-text leading-tight">
           {introduction.title}
         </h1>
         <div className="flex flex-col md:flex-row gap-4 min-[400px]:gap-6 sm:gap-8 md:gap-12 items-center">
@@ -97,7 +97,7 @@ export default function AboutPage() {
 
       {/* 스킬 섹션 */}
       <section>
-        <h2 className="text-lg min-[400px]:text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 text-transparent bg-clip-text mb-4 min-[400px]:mb-6 sm:mb-8">
+        <h2 className="text-sm min-[400px]:text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 text-transparent bg-clip-text mb-4 min-[400px]:mb-6 sm:mb-8">
           주로 사용하는 기술입니다🛠️
         </h2>
         <div className="bg-white dark:bg-slate-800 rounded-xl min-[400px]:rounded-2xl shadow-sm p-2 min-[400px]:p-3 sm:p-4 md:p-6 border border-gray-100 dark:border-slate-700">
