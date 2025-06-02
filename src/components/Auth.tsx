@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { useRouter, useSearchParams } from "next/navigation";
 import { setCookie, deleteCookie } from "@/lib/cookies";
 import { setServerSession } from "@/lib/actions";
 

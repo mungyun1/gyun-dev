@@ -1,9 +1,8 @@
 import { Metadata } from "next";
-import { supabase } from "@/lib/supabase";
 import PostList from "@/components/PostList";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Post } from "@/lib/posts";
+import { getPostsByTag } from "@/lib/tags";
 
 interface Props {
   params: {
@@ -18,21 +17,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       params.tag
     )} 태그와 관련된 모든 게시물을 확인할 수 있습니다.`,
   };
-}
-
-async function getPostsByTag(tag: string): Promise<Post[]> {
-  const { data: posts, error } = await supabase
-    .from("posts")
-    .select("*")
-    .contains("tags", [tag])
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Error fetching posts:", error);
-    return [];
-  }
-
-  return posts;
 }
 
 export default async function TagPage({ params }: Props) {
