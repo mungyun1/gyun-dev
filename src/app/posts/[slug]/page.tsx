@@ -1,6 +1,7 @@
 import Link from "next/link";
 import MarkdownContent from "@/components/MarkdownContent";
 import { getPost } from "@/lib/posts";
+import { getCategory } from "@/lib/categories";
 
 interface PostPageProps {
   params: {
@@ -11,6 +12,7 @@ interface PostPageProps {
 export default async function PostPage({ params }: PostPageProps) {
   const { slug } = await params;
   const post = await getPost(slug);
+  const category = await getCategory(post.category_id);
 
   return (
     <main className="p-4 sm:p-6 md:p-8 lg:p-12">
@@ -46,7 +48,7 @@ export default async function PostPage({ params }: PostPageProps) {
             <div className="flex items-center">
               <span className="text-gray-400 dark:text-gray-500">Category</span>
               <span className="mx-2 text-gray-600 dark:text-gray-300">
-                {post.categories?.name}
+                {category.name}
               </span>
             </div>
           </div>

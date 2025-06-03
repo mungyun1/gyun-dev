@@ -2,6 +2,42 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+export async function GET(
+  request: Request,
+  context: { params: { id: string } }
+) {
+  try {
+    const supabase = createRouteHandlerClient({
+      cookies,
+    });
+    const { id } = context.params;
+
+    const { data: category, error } = await supabase
+      .from("categories")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      return NextResponse.json(
+        { error: "카테고리를 찾을 수 없습니다." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(category);
+  } catch (error) {
+    console.error("Error:", error);
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error ? error.message : "서버 오류가 발생했습니다.",
+      },
+      { status: 500 }
+    );
+  }
+}
+
 export async function DELETE(
   request: Request,
   context: { params: { id: string } }
