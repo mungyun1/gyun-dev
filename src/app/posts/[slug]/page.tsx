@@ -15,16 +15,31 @@ export default async function PostPage({ params }: PostPageProps) {
   const category = await getCategory(post.category_id);
 
   return (
-    <main className="p-4 sm:p-6 md:p-8 lg:p-12">
-      <nav className="flex items-center space-x-2 text-sm sm:text-base text-gray-600 mb-8 sm:mb-12">
-        <Link href="/" className="hover:text-blue-600">
-          Home
+    <main className="p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col items-center">
+      <nav className="flex items-center max-w-4xl mb-8 sm:mb-12 w-full">
+        <Link
+          href="/"
+          className="flex items-center text-sm sm:text-base text-gray-600 hover:text-blue-600 transition-colors"
+        >
+          <svg
+            className="w-4 h-4 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
+          </svg>
+          뒤로가기
         </Link>
-        <span className="text-gray-300">›</span>
-        <span className="text-gray-900 truncate">{post.title}</span>
       </nav>
 
-      <article className="max-w-4xl mx-auto">
+      <article className="max-w-4xl">
         {/* 게시물 헤더 */}
         <div className="mb-8 sm:mb-12 pb-6 sm:pb-8">
           <h1 className="text-2xl lg:text-4xl font-bold mb-4 sm:mb-6 break-keep leading-tight">
