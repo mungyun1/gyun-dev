@@ -4,9 +4,21 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "jnqnxyjduaqlurkxszil.supabase.co",
+        hostname: "**",
       },
     ],
+  },
+  rewrites: async () => {
+    return [
+      {
+        source: "/rss.xml",
+        destination: "/api/feed",
+      },
+      {
+        source: "/sitemap.xml",
+        destination: "/api/sitemap",
+      },
+    ];
   },
   webpack: (config) => {
     config.module.rules.push({

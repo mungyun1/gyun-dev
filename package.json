@@ -10,11 +10,13 @@
     "clean": "rimraf .next node_modules"
   },
   "dependencies": {
+    "@prismicio/client": "^7.17.3",
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/supabase-js": "^2.49.8",
     "@tanstack/react-query": "^5.76.2",
     "@tanstack/react-query-devtools": "^5.76.2",
     "@uiw/react-md-editor": "^4.0.7",
+    "feed": "^5.1.0",
     "firebase": "^11.8.1",
     "install": "^0.13.0",
     "next": "14.1.0",
@@ -25,6 +27,7 @@
     "rehype-slug": "^6.0.0",
     "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.1",
+    "sitemap": "^8.0.0",
     "zustand": "^5.0.5"
   },
   "devDependencies": {
