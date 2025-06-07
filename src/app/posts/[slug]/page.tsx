@@ -2,6 +2,7 @@ import Link from "next/link";
 import MarkdownContent from "@/components/MarkdownContent";
 import { getPost } from "@/lib/posts";
 import { getCategory } from "@/lib/categories";
+import Comments from "@/components/Comments";
 
 interface PostPageProps {
   params: {
@@ -16,7 +17,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
   return (
     <main className="p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col items-center">
-      <nav className="flex items-center max-w-4xl mb-8 sm:mb-12 w-full">
+      <nav className="flex items-center mb-8 sm:mb-12 w-full">
         <Link
           href="/"
           className="flex items-center text-sm sm:text-base text-gray-600 hover:text-blue-600 transition-colors"
@@ -39,7 +40,7 @@ export default async function PostPage({ params }: PostPageProps) {
         </Link>
       </nav>
 
-      <article className="max-w-4xl">
+      <article className="">
         {/* 게시물 헤더 */}
         <div className="mb-8 sm:mb-12 pb-6 sm:pb-8">
           <h1 className="text-2xl lg:text-4xl font-bold mb-4 sm:mb-6 break-keep leading-tight">
@@ -75,10 +76,8 @@ export default async function PostPage({ params }: PostPageProps) {
             <MarkdownContent content={post.content} />
           </div>
         </div>
-
-        {/* 댓글 섹션 */}
-        {/* <Comments slug={params.slug} /> */}
       </article>
+      <Comments />
     </main>
   );
 }
