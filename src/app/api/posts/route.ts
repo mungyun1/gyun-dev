@@ -6,6 +6,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const ids = searchParams.get("ids");
+    const limit = searchParams.get("limit");
 
     const cookieStore = cookies();
     const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
@@ -20,6 +21,10 @@ export async function GET(request: Request) {
 
     // 생성일 기준 내림차순 정렬
     query = query.order("created_at", { ascending: false });
+
+    // limit 파라미터가 있으면 해당 개수만큼, 없으면 기본값 3개
+    const limitCount = limit ? parseInt(limit) : 3;
+    query = query.limit(limitCount);
 
     const { data: posts, error } = await query;
 

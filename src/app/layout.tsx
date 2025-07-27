@@ -36,7 +36,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   modal: React.ReactNode;
 }) {
-  const recentPosts = await getPosts();
+  const recentPosts = await getPosts(3);
 
   return (
     <html lang="ko">

@@ -72,9 +72,14 @@ export async function deletePost(slug: string): Promise<void> {
   }
 }
 
-export async function getPosts(): Promise<Post[]> {
+export async function getPosts(limit?: number): Promise<Post[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/posts`, {
+    const url = new URL(`${process.env.NEXT_PUBLIC_APP_URL}/api/posts`);
+    if (limit) {
+      url.searchParams.set("limit", limit.toString());
+    }
+
+    const res = await fetch(url.toString(), {
       cache: "no-store",
     });
 
