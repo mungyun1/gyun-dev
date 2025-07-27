@@ -1,6 +1,7 @@
 import { getPosts } from "@/lib/posts";
 import Link from "next/link";
 import SearchInput from "./SearchInput";
+import { Metadata } from "next";
 
 interface Post {
   slug: string;
@@ -8,6 +9,18 @@ interface Post {
   summary: string;
   created_at: string;
 }
+
+export const metadata: Metadata = {
+  title: "Search | Gyun's Dev",
+  description:
+    "블로그에서 원하는 글을 검색할 수 있습니다. 제목이나 내용으로 빠르게 찾아보세요.",
+  openGraph: {
+    title: "Search | Gyun's Dev",
+    description:
+      "블로그에서 원하는 글을 검색할 수 있습니다. 제목이나 내용으로 빠르게 찾아보세요.",
+    url: "/search",
+  },
+};
 
 export default async function SearchPage({
   searchParams,

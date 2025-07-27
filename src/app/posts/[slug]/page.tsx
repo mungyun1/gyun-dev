@@ -3,10 +3,46 @@ import MarkdownContent from "@/components/MarkdownContent";
 import { getPost } from "@/lib/posts";
 import { getCategory } from "@/lib/categories";
 import Comments from "@/components/Comments";
+import { createPostSchema } from "@/utils/schema";
+import Script from "next/script";
+import { Metadata } from "next";
 
 interface PostPageProps {
   params: {
     slug: string;
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: PostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPost(slug);
+
+  return {
+    title: `${post.title} | Gyun's Dev`,
+    description: post.summary,
+    openGraph: {
+      title: post.title,
+      description: post.summary,
+      url: `/posts/${slug}`,
+      type: "article",
+      publishedTime: post.created_at,
+      images: post.thumbnail_url
+        ? [
+            {
+              url: post.thumbnail_url.startsWith("http")
+                ? post.thumbnail_url
+                : `${
+                    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+                  }${post.thumbnail_url}`,
+              width: 1200,
+              height: 630,
+              alt: post.title,
+            },
+          ]
+        : undefined,
+    },
   };
 }
 
@@ -16,68 +52,88 @@ export default async function PostPage({ params }: PostPageProps) {
   const category = await getCategory(post.category_id);
 
   return (
-    <main className="p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col items-center">
-      <nav className="flex items-center mb-8 sm:mb-12 w-full">
-        <Link
-          href="/"
-          className="flex items-center text-sm sm:text-base text-gray-600 hover:text-blue-600 transition-colors"
-        >
-          <svg
-            className="w-4 h-4 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+    <>
+      <Script
+        id="post-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            createPostSchema(
+              post.title,
+              post.summary,
+              slug,
+              post.created_at,
+              post.thumbnail_url,
+              post.tags
+            )
+          ),
+        }}
+      />
+      <main className="p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col items-center">
+        <nav className="flex items-center mb-8 sm:mb-12 w-full">
+          <Link
+            href="/"
+            className="flex items-center text-sm sm:text-base text-gray-600 hover:text-blue-600 transition-colors"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M10 19l-7-7m0 0l7-7m-7 7h18"
-            />
-          </svg>
-          뒤로가기
-        </Link>
-      </nav>
+            <svg
+              className="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            뒤로가기
+          </Link>
+        </nav>
 
-      <article className="">
-        {/* 게시물 헤더 */}
-        <div className="mb-8 sm:mb-12 pb-6 sm:pb-8">
-          <h1 className="text-2xl lg:text-4xl font-bold mb-4 sm:mb-6 break-keep leading-tight">
-            {post.title}
-          </h1>
-          <div className="flex flex-wrap gap-y-2 items-center text-sm sm:text-base text-gray-500 dark:text-gray-400">
-            <div className="flex items-center">
-              <span className="text-gray-400 dark:text-gray-500">Posted</span>
-              <span className="mx-2 text-gray-600 dark:text-gray-300">
-                {new Date(post.created_at).toLocaleDateString()}
-              </span>
-            </div>
+        <article className="">
+          {/* 게시물 헤더 */}
+          <div className="mb-8 sm:mb-12 pb-6 sm:pb-8">
+            <h1 className="text-2xl lg:text-4xl font-bold mb-4 sm:mb-6 break-keep leading-tight">
+              {post.title}
+            </h1>
+            <div className="flex flex-wrap gap-y-2 items-center text-sm sm:text-base text-gray-500 dark:text-gray-400">
+              <div className="flex items-center">
+                <span className="text-gray-400 dark:text-gray-500">Posted</span>
+                <span className="mx-2 text-gray-600 dark:text-gray-300">
+                  {new Date(post.created_at).toLocaleDateString()}
+                </span>
+              </div>
 
-            <div className="flex items-center">
-              <span className="text-gray-400 dark:text-gray-500">Author</span>
-              <span className="mx-2 text-gray-600 dark:text-gray-300">
-                Mun Gyun
-              </span>
-            </div>
+              <div className="flex items-center">
+                <span className="text-gray-400 dark:text-gray-500">Author</span>
+                <span className="mx-2 text-gray-600 dark:text-gray-300">
+                  Mun Gyun
+                </span>
+              </div>
 
-            <div className="flex items-center">
-              <span className="text-gray-400 dark:text-gray-500">Category</span>
-              <span className="mx-2 text-gray-600 dark:text-gray-300">
-                {category.name}
-              </span>
+              <div className="flex items-center">
+                <span className="text-gray-400 dark:text-gray-500">
+                  Category
+                </span>
+                <span className="mx-2 text-gray-600 dark:text-gray-300">
+                  {category.name}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* 게시물 본문 */}
-        <div className="pt-4 sm:pt-6">
-          <div className="prose prose-lg sm:prose-xl dark:prose-invert mx-auto">
-            <MarkdownContent content={post.content} />
+          {/* 게시물 본문 */}
+          <div className="pt-4 sm:pt-6">
+            <div className="prose prose-lg sm:prose-xl dark:prose-invert mx-auto">
+              <MarkdownContent content={post.content} />
+            </div>
           </div>
-        </div>
-      </article>
-      <Comments />
-    </main>
+        </article>
+        <Comments />
+      </main>
+    </>
   );
 }

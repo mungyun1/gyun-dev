@@ -11,11 +11,17 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const decodedTag = decodeURIComponent(params.tag);
+  const posts = await getPostsByTag(decodedTag);
+
   return {
-    title: `${decodeURIComponent(params.tag)} - Tags | Gyun's Blog`,
-    description: `${decodeURIComponent(
-      params.tag
-    )} 태그와 관련된 모든 게시물을 확인할 수 있습니다.`,
+    title: `#${decodedTag} | Gyun's Dev`,
+    description: `${decodedTag} 태그와 관련된 모든 게시물을 확인할 수 있습니다. 총 ${posts.length}개의 포스트가 있습니다.`,
+    openGraph: {
+      title: `#${decodedTag} | Gyun's Dev`,
+      description: `${decodedTag} 태그와 관련된 모든 게시물을 확인할 수 있습니다. 총 ${posts.length}개의 포스트가 있습니다.`,
+      url: `/tags/${params.tag}`,
+    },
   };
 }
 
