@@ -5,20 +5,8 @@ import { useEffect, useState } from "react";
 import useStore from "@/store/useStore";
 
 export default function Header() {
-  const { theme, setTheme } = useStore();
+  const { theme, toggleTheme } = useStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
