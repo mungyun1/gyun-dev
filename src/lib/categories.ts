@@ -1,5 +1,3 @@
-import { notFound } from "next/navigation";
-
 export interface CategoryPost {
   id: number;
   title: string;
@@ -128,7 +126,7 @@ export async function getCategories(): Promise<Category[]> {
     return categoriesWithPosts;
   } catch (error) {
     console.error("Error fetching categories:", error);
-    notFound();
+    throw new Error("카테고리 목록을 가져오는데 실패했습니다.");
   }
 }
 
@@ -140,7 +138,6 @@ export async function getCategory(categoryId: string): Promise<Category> {
         `/api/categories/${categoryId}`
       ),
       {
-        cache: "force-cache",
         next: { revalidate: 3600 }, // 1시간마다 재검증
       }
     );
@@ -167,7 +164,6 @@ export async function getCategory(categoryId: string): Promise<Category> {
         `/api/posts?ids=${category.post_ids.join(",")}`
       ),
       {
-        cache: "force-cache",
         next: { revalidate: 3600 }, // 1시간마다 재검증
       }
     );

@@ -1,7 +1,7 @@
 // 블로그 포스트용 JSON-LD 스키마
 export const createPostSchema = (
   title: string,
-  description: string,
+  description: string | null,
   slug: string,
   publishedAt: string,
   image?: string,
@@ -10,7 +10,7 @@ export const createPostSchema = (
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   headline: title,
-  description: description,
+  description: description || "",
   image: image
     ? image.startsWith("http")
       ? image
@@ -53,7 +53,7 @@ export const createPostSchema = (
   articleSection: "개발",
   inLanguage: "ko-KR",
   isAccessibleForFree: true,
-  wordCount: description.length,
+  wordCount: description ? description.length : 0,
 });
 
 // 웹사이트용 JSON-LD 스키마

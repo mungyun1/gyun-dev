@@ -99,7 +99,6 @@ export async function getPost(slug: string) {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_APP_URL}/api/posts/${slug}`,
       {
-        cache: "force-cache",
         next: { revalidate: 3600 }, // 1시간마다 재검증
       }
     );
