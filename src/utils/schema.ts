@@ -108,8 +108,7 @@ export const createPersonSchema = () => ({
   "@type": "Person",
   name: "문균 (Mun Gyun)",
   jobTitle: "Frontend Developer",
-  description:
-    "UX을 최우선으로 고려하며, 세세한 인터랙션까지 신경쓰는 개발자입니다.",
+  description: "세세한 인터랙션까지 신경쓰는 개발자입니다.",
   url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/about`,
   image: `${
     process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"

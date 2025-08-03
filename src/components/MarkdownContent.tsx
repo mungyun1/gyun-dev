@@ -49,7 +49,7 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
     return (
       <div className="w-full prose prose-lg sm:prose-xl dark:prose-invert max-w-none">
         <div
-          className="text-gray-900 dark:text-gray-100 leading-relaxed"
+          className="text-gray-700 dark:text-gray-300 leading-relaxed"
           style={{
             fontSize: "1.125rem",
             lineHeight: "1.8",
@@ -67,41 +67,42 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
   }
 
   return (
-    <div className="w-full prose prose-lg sm:prose-xl dark:prose-invert max-w-none prose-headings:text-gray-900 prose-p:text-gray-800 prose-strong:text-gray-900 prose-em:text-gray-800 prose-code:text-gray-800 prose-pre:bg-gray-100 prose-pre:text-gray-800 prose-pre:p-4 prose-pre:my-6 prose-pre:rounded-lg prose-a:text-blue-600 prose-blockquote:text-gray-700 prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:my-6 prose-ul:text-gray-800 prose-ol:text-gray-800 dark:prose-headings:text-white dark:prose-p:text-gray-200 dark:prose-strong:text-white dark:prose-em:text-gray-200 dark:prose-code:text-gray-200 dark:prose-pre:bg-slate-800 dark:prose-pre:text-white dark:prose-a:text-blue-400 dark:prose-blockquote:text-gray-300 dark:prose-ul:text-gray-200 dark:prose-ol:text-gray-200">
-      <MarkdownPreview
-        source={content}
-        wrapperElement={{
-          "data-color-mode": theme === "dark" ? "dark" : "light",
-        }}
-        style={{
-          backgroundColor: "transparent",
-          color: theme === "dark" ? "#E5E7EB" : "#1F2937",
-          fontSize: "1.125rem",
-          lineHeight: "1.8",
-          letterSpacing: "0.01em",
-          width: "100%",
-          maxWidth: "none",
-        }}
-        remarkPlugins={[remarkGfm, remarkBreaks]}
-        rehypePlugins={[rehypeSlug, rehypeAutolinkHeadings]}
-        components={{
-          ul: ({ children, ...props }) => (
-            <ul className="list-disc pl-6 my-4" {...props}>
-              {children}
-            </ul>
-          ),
-          ol: ({ children, ...props }) => (
-            <ol className="list-decimal pl-6 my-4" {...props}>
-              {children}
-            </ol>
-          ),
-          li: ({ children, ...props }) => (
-            <li className="my-2" {...props}>
-              {children}
-            </li>
-          ),
-        }}
-      />
+    <div className="w-full prose prose-lg sm:prose-xl dark:prose-invert max-w-none">
+      <div className="markdown-content">
+        <MarkdownPreview
+          source={content}
+          wrapperElement={{
+            "data-color-mode": theme === "dark" ? "dark" : "light",
+          }}
+          style={{
+            backgroundColor: "transparent",
+            fontSize: "1.125rem",
+            lineHeight: "1.8",
+            letterSpacing: "0.01em",
+            width: "100%",
+            maxWidth: "none",
+          }}
+          remarkPlugins={[remarkGfm, remarkBreaks]}
+          rehypePlugins={[rehypeSlug, rehypeAutolinkHeadings]}
+          components={{
+            ul: ({ children, ...props }) => (
+              <ul className="list-disc pl-6 my-4" {...props}>
+                {children}
+              </ul>
+            ),
+            ol: ({ children, ...props }) => (
+              <ol className="list-decimal pl-6 my-4" {...props}>
+                {children}
+              </ol>
+            ),
+            li: ({ children, ...props }) => (
+              <li className="my-2" {...props}>
+                {children}
+              </li>
+            ),
+          }}
+        />
+      </div>
     </div>
   );
 }
