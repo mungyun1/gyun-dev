@@ -94,12 +94,12 @@ export default function Auth() {
     }
   };
 
-  // 현재 세션 정보 출력 (디버깅용)
+  // 현재 세션 정보 확인 (디버깅용)
   const checkSession = async () => {
     const {
       data: { session },
     } = await supabase.auth.getSession();
-    console.log("현재 세션:", session);
+    // 세션 정보는 필요시에만 사용
   };
 
   return (

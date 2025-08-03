@@ -2,6 +2,17 @@
 
 import { useEffect } from "react";
 
+// Performance API 타입 정의
+interface LayoutShift extends PerformanceEntry {
+  value: number;
+  hadRecentInput: boolean;
+}
+
+interface PerformanceEventTiming extends PerformanceEntry {
+  processingStart: number;
+  startTime: number;
+}
+
 export default function PerformanceMonitor() {
   useEffect(() => {
     // Core Web Vitals 모니터링
@@ -10,7 +21,6 @@ export default function PerformanceMonitor() {
       const lcpObserver = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         const lastEntry = entries[entries.length - 1];
-        console.log("LCP:", lastEntry.startTime);
 
         // LCP가 2.5초를 초과하면 경고
         if (lastEntry.startTime > 2500) {
@@ -23,14 +33,12 @@ export default function PerformanceMonitor() {
       const fidObserver = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         entries.forEach((entry) => {
-          console.log("FID:", entry.processingStart - entry.startTime);
+          const fidEntry = entry as PerformanceEventTiming;
+          const fid = fidEntry.processingStart - fidEntry.startTime;
 
           // FID가 100ms를 초과하면 경고
-          if (entry.processingStart - entry.startTime > 100) {
-            console.warn(
-              "FID가 100ms를 초과했습니다:",
-              entry.processingStart - entry.startTime
-            );
+          if (fid > 100) {
+            console.warn("FID가 100ms를 초과했습니다:", fid);
           }
         });
       });
@@ -40,12 +48,12 @@ export default function PerformanceMonitor() {
       const clsObserver = new PerformanceObserver((list) => {
         let clsValue = 0;
         const entries = list.getEntries();
-        entries.forEach((entry: any) => {
-          if (!entry.hadRecentInput) {
-            clsValue += entry.value;
+        entries.forEach((entry) => {
+          const layoutShiftEntry = entry as LayoutShift;
+          if (!layoutShiftEntry.hadRecentInput) {
+            clsValue += layoutShiftEntry.value;
           }
         });
-        console.log("CLS:", clsValue);
 
         // CLS가 0.1을 초과하면 경고
         if (clsValue > 0.1) {
