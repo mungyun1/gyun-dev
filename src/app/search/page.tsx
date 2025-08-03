@@ -11,14 +11,28 @@ interface Post {
 }
 
 export const metadata: Metadata = {
-  title: "Search | Gyun's Dev",
+  title: "검색",
   description:
     "블로그에서 원하는 글을 검색할 수 있습니다. 제목이나 내용으로 빠르게 찾아보세요.",
+  keywords: ["검색", "블로그", "글 찾기"],
+  robots: {
+    index: false,
+    follow: true,
+  },
+  alternates: {
+    canonical: "/search",
+  },
   openGraph: {
-    title: "Search | Gyun's Dev",
+    title: "검색 | gyun-dev",
     description:
       "블로그에서 원하는 글을 검색할 수 있습니다. 제목이나 내용으로 빠르게 찾아보세요.",
     url: "/search",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "검색 | gyun-dev",
+    description: "블로그에서 원하는 글을 검색할 수 있습니다.",
   },
 };
 

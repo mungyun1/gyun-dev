@@ -5,22 +5,35 @@ import { createPersonSchema } from "@/utils/schema";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "About | Gyun's Dev",
+  title: "소개",
   description:
     "프론트엔드 개발자 박문균을 소개합니다. UX을 최우선으로 고려하며, 세세한 인터랙션까지 신경쓰는 개발자입니다.",
+  keywords: ["개발자", "프론트엔드", "박문균", "UX", "웹개발", "포트폴리오"],
+  authors: [{ name: "문균 (Mun Gyun)" }],
+  alternates: {
+    canonical: "/about",
+  },
   openGraph: {
-    title: "About | Gyun's Dev",
+    title: "소개 | gyun-dev",
     description:
       "프론트엔드 개발자 박문균을 소개합니다. UX을 최우선으로 고려하며, 세세한 인터랙션까지 신경쓰는 개발자입니다.",
     url: "/about",
+    type: "profile",
     images: [
       {
         url: "/Profile2.png",
         width: 1200,
         height: 630,
-        alt: "About Gyun's Dev",
+        alt: "About gyun-dev",
+        type: "image/png",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "소개 | gyun-dev",
+    description: "프론트엔드 개발자 박문균을 소개합니다.",
+    images: ["/Profile2.png"],
   },
 };
 

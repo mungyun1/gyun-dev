@@ -8,6 +8,9 @@ import SocialLinks from "@/components/SocialLinks";
 import { AuthProvider } from "@/contexts/AuthContext";
 import TopTags from "@/components/TopTags";
 import { getPosts } from "@/lib/posts";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import PerformanceMonitor from "@/components/PerformanceMonitor";
+import SEOOptimizer from "@/components/SEOOptimizer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,14 +22,87 @@ interface Post {
 }
 
 export const metadata: Metadata = {
-  title: "Gyun's Dev",
-  description: "문균의 개발 블로그",
+  title: {
+    default: "gyun-dev - 문균의 개발 블로그",
+    template: "%s",
+  },
+  description:
+    "문균의 개발 블로그입니다. Next.js, React, TypeScript 등 프론트엔드 개발 관련 글과 다양한 기술 이야기를 공유합니다.",
+  keywords: [
+    "개발",
+    "프로그래밍",
+    "웹개발",
+    "프론트엔드",
+    "Next.js",
+    "React",
+    "TypeScript",
+    "JavaScript",
+    "기술블로그",
+  ],
+  authors: [{ name: "문균 (Mun Gyun)" }],
+  creator: "문균 (Mun Gyun)",
+  publisher: "gyun-dev",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
   ),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "ko_KR",
+    url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+    siteName: "gyun-dev",
+    title: "gyun-dev - 문균의 개발 블로그",
+    description:
+      "문균의 개발 블로그입니다. Next.js, React, TypeScript 등 프론트엔드 개발 관련 글과 다양한 기술 이야기를 공유합니다.",
+    images: [
+      {
+        url: `${
+          process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+        }/Profile.png`,
+        width: 1200,
+        height: 630,
+        alt: "gyun-dev - 문균의 개발 블로그",
+        type: "image/png",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "gyun-dev - 문균의 개발 블로그",
+    description:
+      "문균의 개발 블로그입니다. Next.js, React, TypeScript 등 프론트엔드 개발 관련 글과 다양한 기술 이야기를 공유합니다.",
+    images: [
+      `${
+        process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+      }/Profile.png`,
+    ],
+    creator: "@gyun_dev",
+    site: "@gyun_dev",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+    yandex: process.env.YANDEX_VERIFICATION,
+    yahoo: process.env.YAHOO_VERIFICATION,
+  },
   icons: {
     icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
+  manifest: "/manifest.json",
 };
 
 export default async function RootLayout({
@@ -43,6 +119,9 @@ export default async function RootLayout({
       <body
         className={`${inter.className} bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100`}
       >
+        <GoogleAnalytics />
+        <PerformanceMonitor />
+        <SEOOptimizer />
         <AuthProvider>
           <Header />
           <div className="min-h-screen bg-white dark:bg-slate-900">

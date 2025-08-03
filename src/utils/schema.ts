@@ -20,6 +20,14 @@ export const createPostSchema = (
     "@type": "Person",
     name: "문균 (Mun Gyun)",
     url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/about`,
+    jobTitle: "Frontend Developer",
+    knowsAbout: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "JavaScript",
+      "Frontend Development",
+    ],
   },
   publisher: {
     "@type": "Organization",
@@ -29,6 +37,8 @@ export const createPostSchema = (
       url: `${
         process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
       }/Profile.png`,
+      width: 1200,
+      height: 630,
     },
   },
   datePublished: publishedAt,
@@ -39,22 +49,34 @@ export const createPostSchema = (
       process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
     }/posts/${slug}`,
   },
-  keywords: tags ? tags.join(", ") : undefined,
+  keywords: tags ? tags.join(", ") : "개발, 프로그래밍, 웹개발, 프론트엔드",
+  articleSection: "개발",
+  inLanguage: "ko-KR",
+  isAccessibleForFree: true,
+  wordCount: description.length,
 });
 
 // 웹사이트용 JSON-LD 스키마
 export const createWebsiteSchema = () => ({
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Gyun's Dev",
+  name: "gyun-dev",
   description:
-    "문균의 개발 블로그입니다. 개발 관련 글과 다양한 기술 이야기를 공유합니다.",
+    "문균의 개발 블로그입니다. Next.js, React, TypeScript 등 프론트엔드 개발 관련 글과 다양한 기술 이야기를 공유합니다.",
   url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  inLanguage: "ko-KR",
   author: {
     "@type": "Person",
     name: "문균 (Mun Gyun)",
     jobTitle: "Frontend Developer",
     url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/about`,
+    knowsAbout: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "JavaScript",
+      "Frontend Development",
+    ],
   },
   potentialAction: {
     "@type": "SearchAction",
@@ -65,6 +87,18 @@ export const createWebsiteSchema = () => ({
       }/search?q={search_term_string}`,
     },
     "query-input": "required name=search_term_string",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Gyun's Dev",
+    logo: {
+      "@type": "ImageObject",
+      url: `${
+        process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+      }/Profile.png`,
+      width: 1200,
+      height: 630,
+    },
   },
 });
 
@@ -88,5 +122,77 @@ export const createPersonSchema = () => ({
     "JavaScript",
     "Frontend Development",
     "Web Development",
+    "UI/UX Design",
+    "Responsive Design",
   ],
+  worksFor: {
+    "@type": "Organization",
+    name: "gyun-dev",
+  },
+  alumniOf: {
+    "@type": "Organization",
+    name: "개발자 커뮤니티",
+  },
+});
+
+// 블로그용 JSON-LD 스키마
+export const createBlogSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: "gyun-dev",
+  description:
+    "문균의 개발 블로그입니다. Next.js, React, TypeScript 등 프론트엔드 개발 관련 글과 다양한 기술 이야기를 공유합니다.",
+  url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  inLanguage: "ko-KR",
+  author: {
+    "@type": "Person",
+    name: "문균 (Mun Gyun)",
+    jobTitle: "Frontend Developer",
+    url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/about`,
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Gyun's Dev",
+    logo: {
+      "@type": "ImageObject",
+      url: `${
+        process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+      }/Profile.png`,
+      width: 1200,
+      height: 630,
+    },
+  },
+  blogPost: [], // 동적으로 채워질 예정
+});
+
+// Breadcrumb용 JSON-LD 스키마
+export const createBreadcrumbSchema = (
+  items: Array<{ name: string; url: string }>
+) => ({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: item.name,
+    item: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}${
+      item.url
+    }`,
+  })),
+});
+
+// FAQ용 JSON-LD 스키마
+export const createFAQSchema = (
+  questions: Array<{ question: string; answer: string }>
+) => ({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: questions.map((q) => ({
+    "@type": "Question",
+    name: q.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: q.answer,
+    },
+  })),
 });

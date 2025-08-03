@@ -20,7 +20,7 @@ export async function generateMetadata({
   const post = await getPost(slug);
 
   return {
-    title: `${post.title} | Gyun's Dev`,
+    title: `${post.title} | gyun-dev`,
     description: post.summary,
     openGraph: {
       title: post.title,

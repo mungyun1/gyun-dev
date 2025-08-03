@@ -1,20 +1,41 @@
-import { DefaultSeoProps } from "next-seo";
+import { Metadata } from "next";
 
 // 기본 SEO 설정
-export const defaultSEO: DefaultSeoProps = {
-  titleTemplate: "%s | Gyun's Dev",
-  defaultTitle: "Gyun's Dev - 문균의 개발 블로그",
+export const defaultSEO: Metadata = {
+  title: {
+    default: "gyun-dev - 문균의 개발 블로그",
+    template: "%s | gyun-dev",
+  },
   description:
-    "문균의 개발 블로그입니다. 개발 관련 글과 다양한 기술 이야기를 공유합니다.",
-  canonical: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+    "문균의 개발 블로그입니다. Next.js, React, TypeScript 등 프론트엔드 개발 관련 글과 다양한 기술 이야기를 공유합니다.",
+  keywords: [
+    "개발",
+    "프로그래밍",
+    "웹개발",
+    "프론트엔드",
+    "Next.js",
+    "React",
+    "TypeScript",
+    "JavaScript",
+    "기술블로그",
+  ],
+  authors: [{ name: "문균 (Mun Gyun)" }],
+  creator: "문균 (Mun Gyun)",
+  publisher: "gyun-dev",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+  ),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "ko_KR",
     url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
-    siteName: "Gyun's Dev",
-    title: "Gyun's Dev - 문균의 개발 블로그",
+    siteName: "gyun-dev",
+    title: "gyun-dev - 문균의 개발 블로그",
     description:
-      "문균의 개발 블로그입니다. 개발 관련 글과 다양한 기술 이야기를 공유합니다.",
+      "문균의 개발 블로그입니다. Next.js, React, TypeScript 등 프론트엔드 개발 관련 글과 다양한 기술 이야기를 공유합니다.",
     images: [
       {
         url: `${
@@ -22,44 +43,46 @@ export const defaultSEO: DefaultSeoProps = {
         }/Profile.png`,
         width: 1200,
         height: 630,
-        alt: "Gyun's Dev",
+        alt: "gyun-dev - 문균의 개발 블로그",
+        type: "image/png",
       },
     ],
   },
   twitter: {
-    handle: "@gyun_dev",
+    card: "summary_large_image",
+    title: "gyun-dev - 문균의 개발 블로그",
+    description:
+      "문균의 개발 블로그입니다. Next.js, React, TypeScript 등 프론트엔드 개발 관련 글과 다양한 기술 이야기를 공유합니다.",
+    images: [
+      `${
+        process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+      }/Profile.png`,
+    ],
+    creator: "@gyun_dev",
     site: "@gyun_dev",
-    cardType: "summary_large_image",
   },
-  additionalMetaTags: [
-    {
-      name: "viewport",
-      content: "width=device-width, initial-scale=1",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
-    {
-      name: "theme-color",
-      content: "#3B82F6",
-    },
-    {
-      name: "author",
-      content: "문균 (Mun Gyun)",
-    },
-    {
-      name: "keywords",
-      content: "개발, 프로그래밍, 웹개발, 프론트엔드, 백엔드, 기술블로그",
-    },
-  ],
-  additionalLinkTags: [
-    {
-      rel: "icon",
-      href: "/favicon.ico",
-    },
-    {
-      rel: "apple-touch-icon",
-      href: "/apple-touch-icon.png",
-      sizes: "180x180",
-    },
-  ],
+  },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+    yandex: process.env.YANDEX_VERIFICATION,
+    yahoo: process.env.YAHOO_VERIFICATION,
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/manifest.json",
 };
 
 // 페이지별 SEO 설정을 위한 헬퍼 함수
@@ -67,13 +90,17 @@ export const createPageSEO = (
   title: string,
   description: string,
   url?: string,
-  image?: string
-) => ({
+  image?: string,
+  keywords?: string[]
+): Metadata => ({
   title,
   description,
-  canonical: url
-    ? `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}${url}`
-    : undefined,
+  keywords: keywords || ["개발", "프로그래밍", "웹개발", "프론트엔드"],
+  alternates: {
+    canonical: url
+      ? `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}${url}`
+      : undefined,
+  },
   openGraph: {
     title,
     description,
@@ -91,7 +118,22 @@ export const createPageSEO = (
             width: 1200,
             height: 630,
             alt: title,
+            type: "image/png",
           },
+        ]
+      : undefined,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: image
+      ? [
+          image.startsWith("http")
+            ? image
+            : `${
+                process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+              }${image}`,
         ]
       : undefined,
   },
@@ -104,13 +146,18 @@ export const createPostSEO = (
   slug: string,
   publishedAt: string,
   image?: string,
-  tags?: string[]
-) => ({
+  tags?: string[],
+  author?: string
+): Metadata => ({
   title,
   description,
-  canonical: `${
-    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
-  }/posts/${slug}`,
+  keywords: tags || ["개발", "프로그래밍", "웹개발"],
+  authors: [{ name: author || "문균 (Mun Gyun)" }],
+  alternates: {
+    canonical: `${
+      process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+    }/posts/${slug}`,
+  },
   openGraph: {
     title,
     description,
@@ -118,10 +165,10 @@ export const createPostSEO = (
       process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
     }/posts/${slug}`,
     type: "article",
-    article: {
-      publishedTime: publishedAt,
-      tags: tags || [],
-    },
+    publishedTime: publishedAt,
+    modifiedTime: publishedAt,
+    authors: [author || "문균 (Mun Gyun)"],
+    tags: tags || [],
     images: image
       ? [
           {
@@ -133,11 +180,93 @@ export const createPostSEO = (
             width: 1200,
             height: 630,
             alt: title,
+            type: "image/png",
           },
         ]
       : undefined,
   },
   twitter: {
-    cardType: "summary_large_image",
+    card: "summary_large_image",
+    title,
+    description,
+    images: image
+      ? [
+          image.startsWith("http")
+            ? image
+            : `${
+                process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+              }${image}`,
+        ]
+      : undefined,
+  },
+});
+
+// 카테고리 페이지용 SEO 설정
+export const createCategorySEO = (
+  categoryName: string,
+  description: string,
+  slug: string,
+  postCount?: number
+): Metadata => ({
+  title: `${categoryName} 카테고리`,
+  description: `${description}${postCount ? ` (총 ${postCount}개의 글)` : ""}`,
+  keywords: [categoryName, "카테고리", "개발", "프로그래밍"],
+  alternates: {
+    canonical: `${
+      process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+    }/categories/${slug}`,
+  },
+  openGraph: {
+    title: `${categoryName} 카테고리`,
+    description: `${description}${
+      postCount ? ` (총 ${postCount}개의 글)` : ""
+    }`,
+    url: `${
+      process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+    }/categories/${slug}`,
+    type: "website",
+  },
+});
+
+// 태그 페이지용 SEO 설정
+export const createTagSEO = (
+  tagName: string,
+  description: string,
+  postCount?: number
+): Metadata => ({
+  title: `#${tagName} 태그`,
+  description: `${description}${postCount ? ` (총 ${postCount}개의 글)` : ""}`,
+  keywords: [tagName, "태그", "개발", "프로그래밍"],
+  alternates: {
+    canonical: `${
+      process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+    }/tags/${encodeURIComponent(tagName)}`,
+  },
+  openGraph: {
+    title: `#${tagName} 태그`,
+    description: `${description}${
+      postCount ? ` (총 ${postCount}개의 글)` : ""
+    }`,
+    url: `${
+      process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+    }/tags/${encodeURIComponent(tagName)}`,
+    type: "website",
+  },
+});
+
+// 검색 페이지용 SEO 설정
+export const createSearchSEO = (query?: string): Metadata => ({
+  title: query ? `"${query}" 검색 결과` : "검색",
+  description: query
+    ? `"${query}"에 대한 검색 결과입니다.`
+    : "블로그 내 글을 검색해보세요.",
+  robots: {
+    index: false,
+    follow: true,
+  },
+  alternates: {
+    canonical: `${
+      process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+    }/search`,
   },
 });

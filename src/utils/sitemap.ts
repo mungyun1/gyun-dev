@@ -6,7 +6,13 @@ export async function generateSitemap() {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
   // 정적 페이지들
-  const staticPages = ["", "/about", "/categories", "/tags", "/search"];
+  const staticPages = [
+    { url: "", priority: 1.0, changeFrequency: "daily" as const },
+    { url: "/about", priority: 0.8, changeFrequency: "monthly" as const },
+    { url: "/categories", priority: 0.8, changeFrequency: "weekly" as const },
+    { url: "/tags", priority: 0.8, changeFrequency: "weekly" as const },
+    { url: "/search", priority: 0.6, changeFrequency: "daily" as const },
+  ];
 
   // 동적 페이지들
   const posts = await getPosts();
@@ -16,10 +22,10 @@ export async function generateSitemap() {
   const sitemap = [
     // 정적 페이지들
     ...staticPages.map((page) => ({
-      url: `${baseUrl}${page}`,
+      url: `${baseUrl}${page.url}`,
       lastModified: new Date(),
-      changeFrequency: "daily" as const,
-      priority: page === "" ? 1 : 0.8,
+      changeFrequency: page.changeFrequency,
+      priority: page.priority,
     })),
 
     // 블로그 포스트들
@@ -27,7 +33,7 @@ export async function generateSitemap() {
       url: `${baseUrl}/posts/${post.slug}`,
       lastModified: new Date(post.created_at),
       changeFrequency: "weekly" as const,
-      priority: 0.6,
+      priority: 0.7,
     })),
 
     // 카테고리 페이지들
@@ -35,7 +41,7 @@ export async function generateSitemap() {
       url: `${baseUrl}/categories/${category.slug}`,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
-      priority: 0.5,
+      priority: 0.6,
     })),
 
     // 태그 페이지들
@@ -43,9 +49,22 @@ export async function generateSitemap() {
       url: `${baseUrl}/tags/${encodeURIComponent(tag.name)}`,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
-      priority: 0.4,
+      priority: 0.5,
     })),
   ];
 
   return sitemap;
+}
+
+// RSS 피드용 사이트맵 (간소화된 버전)
+export async function generateRSSSitemap() {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const posts = await getPosts();
+
+  return posts.map((post) => ({
+    url: `${baseUrl}/posts/${post.slug}`,
+    title: post.title,
+    description: post.summary,
+    publishedAt: post.created_at,
+  }));
 }

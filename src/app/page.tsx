@@ -5,11 +5,11 @@ import { createWebsiteSchema } from "@/utils/schema";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "홈 | Gyun's Dev",
+  title: "홈 | gyun-dev",
   description:
     "문균의 개발 블로그입니다. 최신 개발 관련 글과 기술 이야기를 확인하세요.",
   openGraph: {
-    title: "홈 | Gyun's Dev",
+    title: "홈 | gyun-dev",
     description:
       "문균의 개발 블로그입니다. 최신 개발 관련 글과 기술 이야기를 확인하세요.",
     url: "/",
@@ -33,9 +33,6 @@ export default async function Home() {
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Recent Posts
           </h1>
-          <p className="text-gray-600 dark:text-gray-300 text-xl">
-            I write about development and other things😎
-          </p>
         </div>
 
         <div className="grid grid-cols-1 2xl:grid-cols-2 gap-6 2xl:gap-8">
