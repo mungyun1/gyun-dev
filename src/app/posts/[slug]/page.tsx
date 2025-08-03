@@ -28,7 +28,7 @@ function PostPageSkeleton() {
 
       <article className="w-full">
         {/* 게시물 헤더 스켈레톤 */}
-        <header className="mb-8 sm:mb-12 pb-6 sm:pb-8 border-b border-gray-200 dark:border-gray-700">
+        <header className="">
           {/* 제목 스켈레톤 */}
           <div className="mb-4 sm:mb-6 space-y-3">
             <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse"></div>
@@ -185,7 +185,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
           <article className="w-full">
             {/* 게시물 헤더 */}
-            <header className="mb-8 sm:mb-12 pb-6 sm:pb-8 border-b border-gray-200 dark:border-gray-700">
+            <header className="mb-8 sm:mb-12 pb-6 sm:pb-8 dark:border-gray-700">
               <h1 className="text-2xl lg:text-4xl font-bold mb-4 sm:mb-6 break-keep leading-tight text-gray-900 dark:text-white">
                 {post.title}
               </h1>
