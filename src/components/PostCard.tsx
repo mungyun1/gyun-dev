@@ -23,7 +23,8 @@ export default function PostCard({
   return (
     <Link
       href={`/posts/${slug}`}
-      className="group block bg-white dark:bg-slate-800 rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] overflow-hidden transition-all duration-300"
+      prefetch={true}
+      className="group block bg-white dark:bg-slate-800 rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] overflow-hidden transition-all duration-200"
     >
       <div className="relative">
         <div className="relative aspect-[16/9] w-full overflow-hidden">
@@ -31,24 +32,25 @@ export default function PostCard({
             src={thumbnail_url || "/opengraph-image"}
             alt={title}
             fill
-            className="object-cover transform group-hover:scale-105 transition-transform duration-300"
+            className="object-cover transform group-hover:scale-105 transition-transform duration-200"
             priority={true}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
-          <div className="absolute inset-0 group-hover:bg-black/20 transition-colors duration-300 group-hover:shadow-[inset_0_0_20px_rgba(0,0,0,0.3)]" />
+          <div className="absolute inset-0 group-hover:bg-black/20 transition-colors duration-200 group-hover:shadow-[inset_0_0_20px_rgba(0,0,0,0.3)]" />
           {categories?.name && (
             <span className="absolute top-4 left-4 px-3 py-1 bg-blue-500/80 text-white text-sm rounded-full backdrop-blur-sm">
               {categories.name}
             </span>
           )}
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-0 group-hover:h-20 backdrop-blur-sm transition-all duration-300 overflow-hidden">
+        <div className="absolute bottom-0 left-0 right-0 h-0 group-hover:h-20 backdrop-blur-sm transition-all duration-200 overflow-hidden">
           <p className="p-4 text-lg sm:text-xl text-white line-clamp-2">
             {summary}
           </p>
         </div>
       </div>
       <div className="p-4 sm:p-6">
-        <h2 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-300">
+        <h2 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-200">
           {title}
         </h2>
         <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 dark:bg-slate-700 text-xs md:text-sm text-gray-600 dark:text-gray-300">

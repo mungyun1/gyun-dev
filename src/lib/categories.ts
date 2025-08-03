@@ -125,7 +125,8 @@ export async function getCategory(categoryId: string): Promise<Category> {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_APP_URL}/api/categories/${categoryId}`,
       {
-        cache: "no-store",
+        cache: "force-cache",
+        next: { revalidate: 3600 }, // 1시간마다 재검증
       }
     );
 
@@ -150,7 +151,8 @@ export async function getCategory(categoryId: string): Promise<Category> {
         process.env.NEXT_PUBLIC_APP_URL
       }/api/posts?ids=${category.post_ids.join(",")}`,
       {
-        cache: "no-store",
+        cache: "force-cache",
+        next: { revalidate: 3600 }, // 1시간마다 재검증
       }
     );
 

@@ -7,6 +7,14 @@ const nextConfig = {
         hostname: "**",
       },
     ],
+    formats: ["image/webp", "image/avif"],
+  },
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ["@next/font"],
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
   },
   rewrites: async () => {
     return [
