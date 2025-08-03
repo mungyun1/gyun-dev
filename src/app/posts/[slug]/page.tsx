@@ -69,7 +69,7 @@ export default async function PostPage({ params }: PostPageProps) {
           ),
         }}
       />
-      <main className="p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col items-center">
+      <main className="min-h-screen w-full max-w-4xl mx-auto p-4 sm:p-6 md:p-8 lg:p-12">
         <nav className="flex items-center mb-8 sm:mb-12 w-full">
           <Link
             href="/"
@@ -93,21 +93,21 @@ export default async function PostPage({ params }: PostPageProps) {
           </Link>
         </nav>
 
-        <article className="">
+        <article className="w-full">
           {/* 게시물 헤더 */}
-          <div className="mb-8 sm:mb-12 pb-6 sm:pb-8">
-            <h1 className="text-2xl lg:text-4xl font-bold mb-4 sm:mb-6 break-keep leading-tight">
+          <header className="mb-8 sm:mb-12 pb-6 sm:pb-8 border-b border-gray-200 dark:border-gray-700">
+            <h1 className="text-2xl lg:text-4xl font-bold mb-4 sm:mb-6 break-keep leading-tight text-gray-900 dark:text-white">
               {post.title}
             </h1>
             <div className="flex flex-wrap gap-y-2 items-center text-sm sm:text-base text-gray-500 dark:text-gray-400">
-              <div className="flex items-center">
+              <div className="flex items-center mr-6">
                 <span className="text-gray-400 dark:text-gray-500">Posted</span>
                 <span className="mx-2 text-gray-600 dark:text-gray-300">
                   {new Date(post.created_at).toLocaleDateString()}
                 </span>
               </div>
 
-              <div className="flex items-center">
+              <div className="flex items-center mr-6">
                 <span className="text-gray-400 dark:text-gray-500">Author</span>
                 <span className="mx-2 text-gray-600 dark:text-gray-300">
                   Mun Gyun
@@ -123,16 +123,19 @@ export default async function PostPage({ params }: PostPageProps) {
                 </span>
               </div>
             </div>
-          </div>
+          </header>
 
           {/* 게시물 본문 */}
-          <div className="pt-4 sm:pt-6">
-            <div className="prose prose-lg sm:prose-xl dark:prose-invert mx-auto">
+          <div className="w-full">
+            <div className="w-full max-w-none">
               <MarkdownContent content={post.content} />
             </div>
           </div>
         </article>
-        <Comments />
+
+        <div className="mt-12">
+          <Comments />
+        </div>
       </main>
     </>
   );

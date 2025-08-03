@@ -80,12 +80,27 @@ export default function Comments() {
     updateUtterancesTheme();
   }, [mounted, theme, isInitialized]);
 
-  if (!mounted) return null;
+  // 스켈레톤 로딩 컴포넌트
+  const CommentsSkeleton = () => (
+    <div className="w-full animate-pulse">
+      <div className="space-y-4">
+        <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="w-full mt-32 border-t dark:border-gray-800">
+    <div className="w-full mt-12 border-t border-gray-200 dark:border-gray-800">
       <div className="py-8">
-        <div ref={commentsRef} className="w-full" />
+        <h3 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">
+          댓글
+        </h3>
+        <div ref={commentsRef} className="w-full min-h-[200px]">
+          {!mounted && <CommentsSkeleton />}
+        </div>
       </div>
     </div>
   );
