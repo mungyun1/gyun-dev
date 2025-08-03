@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Category, CategoryPost, deleteCategory } from "@/lib/categories";
+import { deleteCategory } from "@/lib/categories";
+import { Category, CategoryPost } from "@/lib/categories-server";
 
 interface CategoryListProps {
   categories: Category[];
@@ -98,28 +99,28 @@ export default function CategoryList({
                 <li key={post.slug} className="group/item">
                   <Link
                     href={`/posts/${post.slug}`}
-                    className="flex items-center justify-between py-1.5 md:py-2 hover:translate-x-2 transition-transform duration-300"
+                    className="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                   >
-                    <span className="text-sm md:text-base text-gray-800 dark:text-gray-200 group-hover/item:text-blue-600 dark:group-hover/item:text-blue-400 transition-colors line-clamp-1">
-                      {post.title}
-                    </span>
-                    <span className="text-xs md:text-sm text-gray-400 dark:text-gray-500 shrink-0 ml-2 md:ml-4">
-                      {post.date}
-                    </span>
+                    <div className="flex items-center justify-between">
+                      <span className="truncate">{post.title}</span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400 ml-2 flex-shrink-0">
+                        {post.date}
+                      </span>
+                    </div>
                   </Link>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 italic text-center py-3 md:py-4">
-              게시물이 없습니다.
+            <p className="text-gray-500 dark:text-gray-400 text-sm">
+              아직 게시물이 없습니다.
             </p>
           )}
         </div>
       ))}
       {categories.length === 0 && (
-        <div className="col-span-full text-center py-8 md:py-12">
-          <p className="text-base md:text-lg text-gray-500 dark:text-gray-400">
+        <div className="col-span-full text-center py-12">
+          <p className="text-gray-500 dark:text-gray-400">
             등록된 카테고리가 없습니다.
           </p>
         </div>

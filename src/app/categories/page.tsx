@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getCategories } from "@/lib/categories";
+import { getCategoriesServer } from "@/lib/categories-server";
 import CategoryList from "@/components/CategoryList";
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CategoriesPage() {
-  const categories = await getCategories();
+  const categories = await getCategoriesServer();
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">

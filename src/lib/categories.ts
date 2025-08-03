@@ -22,12 +22,19 @@ interface CreateCategoryData {
   slug: string;
 }
 
+// URL 정규화 함수
+function normalizeUrl(baseUrl: string, path: string): string {
+  const normalizedBase = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${normalizedBase}${normalizedPath}`;
+}
+
 // 클라이언트에서 사용할 API 함수
 export async function createCategory(
   data: CreateCategoryData
 ): Promise<Category> {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL}/api/categories`,
+    normalizeUrl(process.env.NEXT_PUBLIC_APP_URL || "", "/api/categories"),
     {
       method: "POST",
       headers: {
@@ -46,7 +53,10 @@ export async function createCategory(
 
 export async function deleteCategory(categoryId: string): Promise<void> {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL}/api/categories/${categoryId}`,
+    normalizeUrl(
+      process.env.NEXT_PUBLIC_APP_URL || "",
+      `/api/categories/${categoryId}`
+    ),
     {
       method: "DELETE",
     }
@@ -57,10 +67,11 @@ export async function deleteCategory(categoryId: string): Promise<void> {
   }
 }
 
+// 클라이언트 사이드에서 사용할 함수 (CORS 문제 가능성 있음)
 export async function getCategories(): Promise<Category[]> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/categories`,
+      normalizeUrl(process.env.NEXT_PUBLIC_APP_URL || "", "/api/categories"),
       {
         cache: "no-store",
       }
@@ -84,9 +95,10 @@ export async function getCategories(): Promise<Category[]> {
         }
 
         const postsResponse = await fetch(
-          `${
-            process.env.NEXT_PUBLIC_APP_URL
-          }/api/posts?ids=${category.post_ids.join(",")}`,
+          normalizeUrl(
+            process.env.NEXT_PUBLIC_APP_URL || "",
+            `/api/posts?ids=${category.post_ids.join(",")}`
+          ),
           {
             cache: "no-store",
           }
@@ -123,7 +135,10 @@ export async function getCategories(): Promise<Category[]> {
 export async function getCategory(categoryId: string): Promise<Category> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/categories/${categoryId}`,
+      normalizeUrl(
+        process.env.NEXT_PUBLIC_APP_URL || "",
+        `/api/categories/${categoryId}`
+      ),
       {
         cache: "force-cache",
         next: { revalidate: 3600 }, // 1시간마다 재검증
@@ -147,9 +162,10 @@ export async function getCategory(categoryId: string): Promise<Category> {
 
     // 카테고리에 속한 게시물 정보 가져오기
     const postsResponse = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_APP_URL
-      }/api/posts?ids=${category.post_ids.join(",")}`,
+      normalizeUrl(
+        process.env.NEXT_PUBLIC_APP_URL || "",
+        `/api/posts?ids=${category.post_ids.join(",")}`
+      ),
       {
         cache: "force-cache",
         next: { revalidate: 3600 }, // 1시간마다 재검증

@@ -7,23 +7,19 @@ import useStore from "@/store/useStore";
 import { createPost, updatePost, Post } from "@/lib/posts";
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
-import { getCategories } from "@/lib/categories";
+import { Category } from "@/lib/categories-server";
 
 const MDEditor = dynamic(
   () => import("@uiw/react-md-editor").then((mod) => mod.default),
   { ssr: false }
 );
 
-interface Category {
-  id: number;
-  name: string;
-}
-
 interface PostEditorProps {
   initialData?: Post;
+  categories?: Category[];
 }
 
-export default function PostEditor({ initialData }: PostEditorProps) {
+export default function PostEditor({ initialData, categories = [] }: PostEditorProps) {
   const router = useRouter();
   const { theme } = useStore();
   const [title, setTitle] = useState(initialData?.title || "");
@@ -36,24 +32,9 @@ export default function PostEditor({ initialData }: PostEditorProps) {
   const [categoryId, setCategoryId] = useState<number | null>(
     initialData?.category_id || null
   );
-  const [categories, setCategories] = useState<Category[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const contentImageInputRef = useRef<HTMLInputElement>(null);
-
-  // 카테고리 목록 가져오기
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const data = await getCategories();
-      setCategories(
-        (data || []).map((cat) => ({
-          ...cat,
-          id: Number(cat.id),
-        }))
-      );
-    };
-    fetchCategories();
-  }, []);
 
   // 초기 데이터 설정
   useEffect(() => {
@@ -231,7 +212,7 @@ export default function PostEditor({ initialData }: PostEditorProps) {
         >
           <option value="">카테고리 선택</option>
           {categories.map((category) => (
-            <option key={category.id} value={category.id}>
+            <option key={category.id} value={Number(category.id)}>
               {category.name}
             </option>
           ))}

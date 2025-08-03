@@ -1,15 +1,15 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { getCategoriesServer } from "@/lib/categories-server";
 import CategoryList from "@/components/CategoryList";
-import { getCategories } from "@/lib/categories";
 
 export const metadata: Metadata = {
-  title: "Categories | Gyun's Blog",
+  title: "카테고리 관리",
   description: "카테고리 관리",
 };
 
 export default async function CategoriesPage() {
-  const categories = await getCategories();
+  const categories = await getCategoriesServer();
 
   return (
     <div className="min-h-screen dark:bg-slate-900 py-6">

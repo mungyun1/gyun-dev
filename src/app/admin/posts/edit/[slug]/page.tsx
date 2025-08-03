@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import PostEditor from "@/components/PostEditor";
 import { notFound } from "next/navigation";
 import { getPost } from "@/lib/posts";
+import { getCategoriesServer } from "@/lib/categories-server";
 
 export const metadata: Metadata = {
   title: "Edit Post | Gyun's Blog",
@@ -20,7 +21,10 @@ export default async function EditPostPage({
   searchParams,
 }: PageProps) {
   const { slug } = params;
-  const post = await getPost(slug);
+  const [post, categories] = await Promise.all([
+    getPost(slug),
+    getCategoriesServer(),
+  ]);
 
   if (!post) {
     notFound();
@@ -32,7 +36,7 @@ export default async function EditPostPage({
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
           게시물 수정
         </h1>
-        <PostEditor initialData={post} />
+        <PostEditor initialData={post} categories={categories} />
       </div>
     </div>
   );
