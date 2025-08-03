@@ -22,7 +22,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("Setting up auth state listener");
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      console.log("Auth state changed:", user?.email);
       setUser(user);
       setLoading(false);
     });
@@ -32,7 +34,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
+      console.log("Attempting login with email:", email);
       const result = await signInWithEmailAndPassword(auth, email, password);
+      console.log("Login successful:", result.user.email);
     } catch (error) {
       console.error("Login error in AuthContext:", error);
       throw error;
@@ -42,6 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     try {
       await signOut(auth);
+      console.log("Logout successful");
     } catch (error) {
       console.error("Logout error:", error);
       throw error;

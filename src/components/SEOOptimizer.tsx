@@ -37,8 +37,26 @@ export default function SEOOptimizer() {
         loadTime: performance.now(),
       };
 
-      // 개발 환경에서만 경고 메시지 출력
+      // 개발 환경에서만 콘솔에 출력
       if (process.env.NODE_ENV === "development") {
+        console.log("SEO Data:", seoData);
+
+        // SEO 체크리스트
+        const seoChecks = {
+          hasTitle: !!seoData.title,
+          hasDescription: !!seoData.description,
+          hasCanonical: !!seoData.canonical,
+          hasOgTitle: !!seoData.ogTitle,
+          hasOgDescription: !!seoData.ogDescription,
+          hasOgImage: !!seoData.ogImage,
+          hasTwitterCard: !!seoData.twitterCard,
+          hasOneH1: seoData.h1Count === 1,
+          hasImagesWithAlt: seoData.imageCount === seoData.imageWithAltCount,
+          reasonableLoadTime: seoData.loadTime < 3000,
+        };
+
+        console.log("SEO Checks:", seoChecks);
+
         // 경고 메시지 출력
         if (!seoData.title) console.warn("❌ 페이지 제목이 없습니다");
         if (!seoData.description) console.warn("❌ 메타 설명이 없습니다");

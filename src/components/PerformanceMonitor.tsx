@@ -2,15 +2,13 @@
 
 import { useEffect } from "react";
 
-// Performance API 타입 정의
-interface LayoutShift extends PerformanceEntry {
-  value: number;
-  hadRecentInput: boolean;
+interface PerformanceEntryWithValue extends PerformanceEntry {
+  value?: number;
+  hadRecentInput?: boolean;
 }
 
-interface PerformanceEventTiming extends PerformanceEntry {
+interface FirstInputEntry extends PerformanceEntry {
   processingStart: number;
-  startTime: number;
 }
 
 export default function PerformanceMonitor() {
@@ -21,6 +19,11 @@ export default function PerformanceMonitor() {
       const lcpObserver = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         const lastEntry = entries[entries.length - 1];
+
+        // 개발 환경에서만 로그 출력
+        if (process.env.NODE_ENV === "development") {
+          console.log("LCP:", lastEntry.startTime);
+        }
 
         // LCP가 2.5초를 초과하면 경고
         if (lastEntry.startTime > 2500) {
@@ -33,12 +36,17 @@ export default function PerformanceMonitor() {
       const fidObserver = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         entries.forEach((entry) => {
-          const fidEntry = entry as PerformanceEventTiming;
-          const fid = fidEntry.processingStart - fidEntry.startTime;
+          const fidEntry = entry as FirstInputEntry;
+          const fidValue = fidEntry.processingStart - fidEntry.startTime;
+
+          // 개발 환경에서만 로그 출력
+          if (process.env.NODE_ENV === "development") {
+            console.log("FID:", fidValue);
+          }
 
           // FID가 100ms를 초과하면 경고
-          if (fid > 100) {
-            console.warn("FID가 100ms를 초과했습니다:", fid);
+          if (fidValue > 100) {
+            console.warn("FID가 100ms를 초과했습니다:", fidValue);
           }
         });
       });
@@ -49,11 +57,16 @@ export default function PerformanceMonitor() {
         let clsValue = 0;
         const entries = list.getEntries();
         entries.forEach((entry) => {
-          const layoutShiftEntry = entry as LayoutShift;
-          if (!layoutShiftEntry.hadRecentInput) {
-            clsValue += layoutShiftEntry.value;
+          const clsEntry = entry as PerformanceEntryWithValue;
+          if (!clsEntry.hadRecentInput && clsEntry.value !== undefined) {
+            clsValue += clsEntry.value;
           }
         });
+
+        // 개발 환경에서만 로그 출력
+        if (process.env.NODE_ENV === "development") {
+          console.log("CLS:", clsValue);
+        }
 
         // CLS가 0.1을 초과하면 경고
         if (clsValue > 0.1) {
