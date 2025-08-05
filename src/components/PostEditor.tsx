@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import useStore from "@/store/useStore";
 import { createPost, updatePost, Post } from "@/lib/posts";
-import { createClientSupabaseClient } from "@/lib/supabase";
+import { createClientSupabaseClient } from "@/lib/supabase/client";
 import Image from "next/image";
 import { Category } from "@/lib/categories-server";
 
