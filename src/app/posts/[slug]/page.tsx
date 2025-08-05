@@ -123,7 +123,7 @@ export async function generateMetadata({
               url: post.thumbnail_url.startsWith("http")
                 ? post.thumbnail_url
                 : `${
-                    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+                    process.env.NEXT_PUBLIC_APP_URL
                   }${post.thumbnail_url}`,
               width: 1200,
               height: 630,

@@ -14,12 +14,12 @@ export const createPostSchema = (
   image: image
     ? image.startsWith("http")
       ? image
-      : `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}${image}`
+      : `${process.env.NEXT_PUBLIC_APP_URL}${image}`
     : undefined,
   author: {
     "@type": "Person",
     name: "문균 (Mun Gyun)",
-    url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/about`,
+    url: `${process.env.NEXT_PUBLIC_APP_URL}/about`,
     jobTitle: "Frontend Developer",
     knowsAbout: [
       "Next.js",
@@ -34,9 +34,7 @@ export const createPostSchema = (
     name: "Gyun's Dev",
     logo: {
       "@type": "ImageObject",
-      url: `${
-        process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
-      }/Profile.png`,
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/Profile.png`,
       width: 1200,
       height: 630,
     },
@@ -45,9 +43,7 @@ export const createPostSchema = (
   dateModified: publishedAt,
   mainEntityOfPage: {
     "@type": "WebPage",
-    "@id": `${
-      process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
-    }/posts/${slug}`,
+    "@id": `${process.env.NEXT_PUBLIC_APP_URL}/posts/${slug}`,
   },
   keywords: tags ? tags.join(", ") : "개발, 프로그래밍, 웹개발, 프론트엔드",
   articleSection: "개발",
@@ -63,13 +59,13 @@ export const createWebsiteSchema = () => ({
   name: "gyun-dev",
   description:
     "문균의 개발 블로그입니다. Next.js, React, TypeScript 등 프론트엔드 개발 관련 글과 다양한 기술 이야기를 공유합니다.",
-  url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  url: process.env.NEXT_PUBLIC_APP_URL,
   inLanguage: "ko-KR",
   author: {
     "@type": "Person",
     name: "문균 (Mun Gyun)",
     jobTitle: "Frontend Developer",
-    url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/about`,
+    url: `${process.env.NEXT_PUBLIC_APP_URL}/about`,
     knowsAbout: [
       "Next.js",
       "React",
@@ -82,9 +78,7 @@ export const createWebsiteSchema = () => ({
     "@type": "SearchAction",
     target: {
       "@type": "EntryPoint",
-      urlTemplate: `${
-        process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
-      }/search?q={search_term_string}`,
+      urlTemplate: `${process.env.NEXT_PUBLIC_APP_URL}/search?q={search_term_string}`,
     },
     "query-input": "required name=search_term_string",
   },
@@ -93,9 +87,7 @@ export const createWebsiteSchema = () => ({
     name: "Gyun's Dev",
     logo: {
       "@type": "ImageObject",
-      url: `${
-        process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
-      }/Profile.png`,
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/Profile.png`,
       width: 1200,
       height: 630,
     },
@@ -109,10 +101,8 @@ export const createPersonSchema = () => ({
   name: "문균 (Mun Gyun)",
   jobTitle: "Frontend Developer",
   description: "세세한 인터랙션까지 신경쓰는 개발자입니다.",
-  url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/about`,
-  image: `${
-    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
-  }/Profile2.png`,
+  url: `${process.env.NEXT_PUBLIC_APP_URL}/about`,
+  image: `${process.env.NEXT_PUBLIC_APP_URL}/Profile2.png`,
   sameAs: ["https://github.com/gyun-dev", "https://linkedin.com/in/gyun-dev"],
   knowsAbout: [
     "Next.js",
@@ -141,22 +131,20 @@ export const createBlogSchema = () => ({
   name: "gyun-dev",
   description:
     "문균의 개발 블로그입니다. Next.js, React, TypeScript 등 프론트엔드 개발 관련 글과 다양한 기술 이야기를 공유합니다.",
-  url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  url: process.env.NEXT_PUBLIC_APP_URL,
   inLanguage: "ko-KR",
   author: {
     "@type": "Person",
     name: "문균 (Mun Gyun)",
     jobTitle: "Frontend Developer",
-    url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/about`,
+    url: `${process.env.NEXT_PUBLIC_APP_URL}/about`,
   },
   publisher: {
     "@type": "Organization",
     name: "Gyun's Dev",
     logo: {
       "@type": "ImageObject",
-      url: `${
-        process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
-      }/Profile.png`,
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/Profile.png`,
       width: 1200,
       height: 630,
     },
@@ -174,9 +162,7 @@ export const createBreadcrumbSchema = (
     "@type": "ListItem",
     position: index + 1,
     name: item.name,
-    item: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}${
-      item.url
-    }`,
+    item: `${process.env.NEXT_PUBLIC_APP_URL}${item.url}`,
   })),
 });
 

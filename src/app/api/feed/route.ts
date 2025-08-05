@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const posts = await getPosts();
-  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://gyun-dev.co.kr";
 
   const feed = new Feed({
     title: "Gyun's Blog",

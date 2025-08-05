@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000/api",
+      "url": "http://https://gyun-dev.co.kr/api",
       "description": "개발 서버"
     }
   ],

@@ -3,7 +3,7 @@ import { getCategories } from "@/lib/categories";
 import { getAllTags } from "@/lib/tags";
 
 export async function generateSitemap() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
 
   // 정적 페이지들
   const staticPages = [
@@ -58,7 +58,7 @@ export async function generateSitemap() {
 
 // RSS 피드용 사이트맵 (간소화된 버전)
 export async function generateRSSSitemap() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
   const posts = await getPosts();
 
   return posts.map((post) => ({

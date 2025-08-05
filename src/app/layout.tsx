@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   creator: "문균 (Mun Gyun)",
   publisher: "gyun-dev",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+    process.env.NEXT_PUBLIC_APP_URL || "https://gyun-dev.co.kr"
   ),
   alternates: {
     canonical: "/",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ko_KR",
-    url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+    url: process.env.NEXT_PUBLIC_APP_URL || "https://gyun-dev.co.kr",
     siteName: "gyun-dev",
     title: "gyun-dev - 문균의 개발 블로그",
     description:
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: `${
-          process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+          process.env.NEXT_PUBLIC_APP_URL || "https://gyun-dev.co.kr"
         }/Profile.png`,
         width: 1200,
         height: 630,
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
       "문균의 개발 블로그입니다. Next.js, React, TypeScript 등 프론트엔드 개발 관련 글과 다양한 기술 이야기를 공유합니다.",
     images: [
       `${
-        process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+        process.env.NEXT_PUBLIC_APP_URL || "https://gyun-dev.co.kr"
       }/Profile.png`,
     ],
     creator: "@gyun_dev",

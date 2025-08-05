@@ -2,7 +2,7 @@ import { getPosts } from "@/lib/posts";
 import { generateRSSSitemap } from "@/utils/sitemap";
 
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
   const posts = await generateRSSSitemap();
 
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
