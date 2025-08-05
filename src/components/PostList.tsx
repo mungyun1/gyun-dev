@@ -65,9 +65,7 @@ export default function PostList({
             <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 mb-2 line-clamp-2">
               {post.title}
             </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
-              {post.summary}
-            </p>
+
             <div className="flex items-center justify-between">
               <div className="text-xs text-gray-500 dark:text-gray-400">
                 {formatDate(post.created_at)}

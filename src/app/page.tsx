@@ -86,7 +86,6 @@ export default async function Home() {
                   key={post.slug}
                   title={post.title}
                   slug={post.slug}
-                  summary={post.summary}
                   created_at={post.created_at}
                   categories={post.categories}
                   thumbnail_url={post.thumbnail_url}

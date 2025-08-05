@@ -26,7 +26,7 @@ export async function GET() {
       title: post.title,
       id: `${siteUrl}/posts/${post.slug}`,
       link: `${siteUrl}/posts/${post.slug}`,
-      description: post.summary,
+      description: post.content.substring(0, 160),
       content: post.content,
       author: [
         {

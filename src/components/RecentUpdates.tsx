@@ -2,7 +2,6 @@ import Link from "next/link";
 
 interface RecentUpdate {
   title: string;
-  summary: string;
   slug: string;
 }
 
@@ -22,7 +21,6 @@ export default function RecentUpdates({ updates }: RecentUpdatesProps) {
             className="block hover:bg-gray-50 p-2 rounded"
           >
             <h3 className="text-sm font-semibold">{update.title}</h3>
-            <p className="text-xs text-gray-600">{update.summary}</p>
           </Link>
         ))}
       </div>

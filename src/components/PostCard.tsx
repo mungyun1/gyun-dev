@@ -4,7 +4,6 @@ import Image from "next/image";
 interface PostCardProps {
   title: string;
   slug: string;
-  summary: string;
   created_at: string;
   thumbnail_url?: string;
   categories: {
@@ -15,7 +14,6 @@ interface PostCardProps {
 export default function PostCard({
   title,
   slug,
-  summary,
   created_at,
   thumbnail_url,
   categories,
@@ -42,11 +40,6 @@ export default function PostCard({
               {categories.name}
             </span>
           )}
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-0 group-hover:h-20 backdrop-blur-sm transition-all duration-200 overflow-hidden">
-          <p className="p-4 text-lg sm:text-xl text-white line-clamp-2">
-            {summary}
-          </p>
         </div>
       </div>
       <div className="p-4 sm:p-6">

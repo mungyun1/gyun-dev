@@ -55,7 +55,7 @@ export async function PUT(
       .update({
         title: data.title,
         content: data.content,
-        summary: data.summary,
+
         slug: data.slug,
         thumbnail_url: data.thumbnail_url,
         updated_at: new Date().toISOString(),

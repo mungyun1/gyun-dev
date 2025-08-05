@@ -64,7 +64,7 @@ export async function generateRSSSitemap() {
   return posts.map((post) => ({
     url: `${baseUrl}/posts/${post.slug}`,
     title: post.title,
-    description: post.summary,
+    description: post.content.substring(0, 160),
     publishedAt: post.created_at,
   }));
 }

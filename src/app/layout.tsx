@@ -19,7 +19,6 @@ const inter = Inter({ subsets: ["latin"] });
 interface Post {
   slug: string;
   title: string;
-  summary: string;
   created_at: string;
 }
 
@@ -226,9 +225,6 @@ export default async function RootLayout({
                                   <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
                                     {post.title}
                                   </h3>
-                                  <p className="text-sm text-gray-600 dark:text-gray-300 truncate">
-                                    {post.summary}
-                                  </p>
                                 </div>
                                 <div className="flex-shrink-0 text-blue-500 dark:text-blue-400">
                                   <svg

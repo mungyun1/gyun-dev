@@ -4,7 +4,6 @@ export interface Post {
   id: number;
   slug: string;
   title: string;
-  summary: string;
   content: string;
   created_at: string;
   thumbnail_url?: string;
@@ -17,7 +16,6 @@ export interface Post {
 interface PostData {
   title: string;
   content: string;
-  summary: string;
   slug: string;
   thumbnail_url?: string;
 }

@@ -27,7 +27,7 @@ export default function PostEditor({
   const { theme } = useStore();
   const [title, setTitle] = useState(initialData?.title || "");
   const [content, setContent] = useState(initialData?.content || "");
-  const [summary, setSummary] = useState(initialData?.summary || "");
+
   const [slug, setSlug] = useState(initialData?.slug || "");
   const [thumbnailUrl, setThumbnailUrl] = useState(
     initialData?.thumbnail_url || ""
@@ -51,7 +51,7 @@ export default function PostEditor({
     if (initialData) {
       setTitle(initialData.title);
       setContent(initialData.content);
-      setSummary(initialData.summary);
+
       setSlug(initialData.slug);
       setThumbnailUrl(initialData.thumbnail_url || "");
       setCategoryId(initialData.category_id);
@@ -168,7 +168,7 @@ export default function PostEditor({
       const data = {
         title,
         content,
-        summary,
+
         slug,
         thumbnail_url: thumbnailUrl,
         category_id: categoryId,
@@ -296,23 +296,6 @@ export default function PostEditor({
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
           className="mt-1 h-8 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-600 dark:text-white sm:text-sm"
-          required
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="summary"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-        >
-          요약
-        </label>
-        <textarea
-          id="summary"
-          value={summary}
-          onChange={(e) => setSummary(e.target.value)}
-          rows={3}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-600 dark:text-white sm:text-sm"
           required
         />
       </div>

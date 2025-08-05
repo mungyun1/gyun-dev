@@ -6,7 +6,6 @@ import { Metadata } from "next";
 interface Post {
   slug: string;
   title: string;
-  summary: string;
   created_at: string;
 }
 
@@ -44,10 +43,8 @@ export default async function SearchPage({
   const posts = (await getPosts()) as Post[];
   const searchTerm = searchParams.q || "";
 
-  const filteredPosts = posts.filter(
-    (post) =>
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.summary.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredPosts = posts.filter((post) =>
+    post.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -64,7 +61,7 @@ export default async function SearchPage({
             <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
               {post.title}
             </h2>
-            <p className="text-gray-600 dark:text-gray-300">{post.summary}</p>
+
             <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
               {new Date(post.created_at).toLocaleDateString()}
             </div>

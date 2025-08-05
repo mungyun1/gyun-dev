@@ -110,10 +110,10 @@ export async function generateMetadata({
 
   return {
     title: `${post.title} | gyun-dev`,
-    description: post.summary,
+    description: post.content.substring(0, 160),
     openGraph: {
       title: post.title,
-      description: post.summary,
+      description: post.content.substring(0, 160),
       url: `/posts/${slug}`,
       type: "article",
       publishedTime: post.created_at,
@@ -122,9 +122,7 @@ export async function generateMetadata({
             {
               url: post.thumbnail_url.startsWith("http")
                 ? post.thumbnail_url
-                : `${
-                    process.env.NEXT_PUBLIC_APP_URL
-                  }${post.thumbnail_url}`,
+                : `${process.env.NEXT_PUBLIC_APP_URL}${post.thumbnail_url}`,
               width: 1200,
               height: 630,
               alt: post.title,
@@ -149,7 +147,7 @@ export default async function PostPage({ params }: PostPageProps) {
           __html: JSON.stringify(
             createPostSchema(
               post.title,
-              post.summary,
+              post.content.substring(0, 160),
               slug,
               post.created_at,
               post.thumbnail_url,

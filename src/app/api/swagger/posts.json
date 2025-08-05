@@ -188,9 +188,6 @@
           "content": {
             "type": "string"
           },
-          "summary": {
-            "type": "string"
-          },
           "slug": {
             "type": "string"
           },
@@ -209,7 +206,7 @@
       },
       "PostInput": {
         "type": "object",
-        "required": ["title", "content", "summary", "slug"],
+        "required": ["title", "content", "slug"],
         "properties": {
           "title": {
             "type": "string"
@@ -217,9 +214,7 @@
           "content": {
             "type": "string"
           },
-          "summary": {
-            "type": "string"
-          },
+
           "slug": {
             "type": "string"
           }

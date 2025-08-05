@@ -8,13 +8,14 @@
 - **Method:** `GET`
 - **Description:** 모든 게시물 목록을 조회합니다.
 - **Response:**
+
   ```json
   [
     {
       "id": "string",
       "title": "string",
       "content": "string",
-      "summary": "string",
+
       "slug": "string",
       "created_at": "string",
       "updated_at": "string",
@@ -22,6 +23,7 @@
     }
   ]
   ```
+
 - **Error Response:**
   - Status: 500
   ```json
@@ -40,7 +42,6 @@
   {
     "title": "string",
     "content": "string",
-    "summary": "string",
     "slug": "string"
   }
   ```
@@ -50,7 +51,6 @@
     "id": "string",
     "title": "string",
     "content": "string",
-    "summary": "string",
     "slug": "string",
     "created_at": "string",
     "user_id": "string"
@@ -82,7 +82,6 @@
     "id": "string",
     "title": "string",
     "content": "string",
-    "summary": "string",
     "slug": "string",
     "created_at": "string",
     "updated_at": "string",
@@ -108,7 +107,6 @@
   {
     "title": "string",
     "content": "string",
-    "summary": "string",
     "slug": "string"
   }
   ```
@@ -118,7 +116,6 @@
     "id": "string",
     "title": "string",
     "content": "string",
-    "summary": "string",
     "slug": "string",
     "updated_at": "string"
   }
