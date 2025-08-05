@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import useStore from "@/store/useStore";
 import { createPost, updatePost, Post } from "@/lib/posts";
-import { supabase } from "@/lib/supabase";
+import { createClientSupabaseClient } from "@/lib/supabase";
 import Image from "next/image";
 import { Category } from "@/lib/categories-server";
 
@@ -19,7 +19,10 @@ interface PostEditorProps {
   categories?: Category[];
 }
 
-export default function PostEditor({ initialData, categories = [] }: PostEditorProps) {
+export default function PostEditor({
+  initialData,
+  categories = [],
+}: PostEditorProps) {
   const router = useRouter();
   const { theme } = useStore();
   const [title, setTitle] = useState(initialData?.title || "");
@@ -34,7 +37,14 @@ export default function PostEditor({ initialData, categories = [] }: PostEditorP
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [supabase, setSupabase] = useState<any>(null);
   const contentImageInputRef = useRef<HTMLInputElement>(null);
+
+  // Supabase 클라이언트 초기화
+  useEffect(() => {
+    const client = createClientSupabaseClient();
+    setSupabase(client);
+  }, []);
 
   // 초기 데이터 설정
   useEffect(() => {
@@ -49,6 +59,9 @@ export default function PostEditor({ initialData, categories = [] }: PostEditorP
   }, [initialData]);
 
   const uploadImage = async (file: File, path: string) => {
+    if (!supabase)
+      throw new Error("Supabase 클라이언트가 초기화되지 않았습니다.");
+
     if (file.size > 5 * 1024 * 1024) {
       throw new Error("파일 크기는 5MB를 초과할 수 없습니다.");
     }
@@ -77,6 +90,8 @@ export default function PostEditor({ initialData, categories = [] }: PostEditorP
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!supabase) return;
+
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -106,6 +121,8 @@ export default function PostEditor({ initialData, categories = [] }: PostEditorP
   const handleContentImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
+    if (!supabase) return;
+
     const file = e.target.files?.[0];
     if (!file) return;
 

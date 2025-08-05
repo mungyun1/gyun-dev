@@ -2,6 +2,20 @@ import { NextResponse } from "next/server";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
+// CORS 헤더를 추가하는 헬퍼 함수
+function addCorsHeaders(response: NextResponse) {
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  response.headers.set(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+  return response;
+}
+
 export async function GET() {
   try {
     const supabase = createRouteHandlerClient({
@@ -14,13 +28,15 @@ export async function GET() {
 
     if (error) throw error;
 
-    return NextResponse.json(categories);
+    const response = NextResponse.json(categories);
+    return addCorsHeaders(response);
   } catch (error) {
     console.error("Error fetching categories:", error);
-    return NextResponse.json(
+    const response = NextResponse.json(
       { error: "카테고리 목록을 가져오는데 실패했습니다." },
       { status: 500 }
     );
+    return addCorsHeaders(response);
   }
 }
 
@@ -33,10 +49,11 @@ export async function POST(request: Request) {
     const { name } = body;
 
     if (!name) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { error: "이름과 slug는 필수 입력 항목입니다." },
         { status: 400 }
       );
+      return addCorsHeaders(response);
     }
 
     // 중복 체크
@@ -51,10 +68,11 @@ export async function POST(request: Request) {
     }
 
     if (existingCategory) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { error: "이미 존재하는 이름입니다." },
         { status: 400 }
       );
+      return addCorsHeaders(response);
     }
 
     // 카테고리 생성
@@ -68,13 +86,15 @@ export async function POST(request: Request) {
 
     if (error) throw error;
 
-    return NextResponse.json(category, { status: 201 });
+    const response = NextResponse.json(category, { status: 201 });
+    return addCorsHeaders(response);
   } catch (error) {
     console.error("Error creating category:", error);
-    return NextResponse.json(
+    const response = NextResponse.json(
       { error: "카테고리 생성에 실패했습니다." },
       { status: 500 }
     );
+    return addCorsHeaders(response);
   }
 }
 

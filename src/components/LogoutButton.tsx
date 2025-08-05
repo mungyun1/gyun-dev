@@ -1,10 +1,21 @@
 "use client";
 
-import { supabase } from "@/lib/supabase";
+import { useState, useEffect } from "react";
+import { createClientSupabaseClient } from "@/lib/supabase";
 import { clearServerSession } from "@/lib/actions";
 
 export default function LogoutButton() {
+  const [supabase, setSupabase] = useState<any>(null);
+
+  useEffect(() => {
+    // 클라이언트에서만 Supabase 클라이언트 생성
+    const client = createClientSupabaseClient();
+    setSupabase(client);
+  }, []);
+
   const handleLogout = async () => {
+    if (!supabase) return;
+
     try {
       // Supabase 로그아웃
       await supabase.auth.signOut();

@@ -2,6 +2,20 @@ import { NextResponse } from "next/server";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
+// CORS 헤더를 추가하는 헬퍼 함수
+function addCorsHeaders(response: NextResponse) {
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  response.headers.set(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+  return response;
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -30,13 +44,15 @@ export async function GET(request: Request) {
 
     if (error) throw error;
 
-    return NextResponse.json(posts);
+    const response = NextResponse.json(posts);
+    return addCorsHeaders(response);
   } catch (error) {
     console.error("Error fetching posts:", error);
-    return NextResponse.json(
+    const response = NextResponse.json(
       { error: "게시물 목록을 불러오는데 실패했습니다." },
       { status: 500 }
     );
+    return addCorsHeaders(response);
   }
 }
 
@@ -52,10 +68,11 @@ export async function POST(request: Request) {
     } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { error: "로그인이 필요합니다." },
         { status: 401 }
       );
+      return addCorsHeaders(response);
     }
 
     const data = await request.json();
@@ -71,12 +88,26 @@ export async function POST(request: Request) {
 
     if (error) throw error;
 
-    return NextResponse.json(post);
+    const response = NextResponse.json(post);
+    return addCorsHeaders(response);
   } catch (error) {
     console.error("Error creating post:", error);
-    return NextResponse.json(
+    const response = NextResponse.json(
       { error: "게시물 생성에 실패했습니다." },
       { status: 500 }
     );
+    return addCorsHeaders(response);
   }
+}
+
+// OPTIONS 요청 처리 (preflight 요청)
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    },
+  });
 }

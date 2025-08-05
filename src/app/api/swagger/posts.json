@@ -9,6 +9,10 @@
     {
       "url": "https://gyun-dev.co.kr/api",
       "description": "프로덕션 서버"
+    },
+    {
+      "url": "http://localhost:3000/api",
+      "description": "개발 서버"
     }
   ],
   "paths": {

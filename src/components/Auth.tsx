@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
-import { setCookie, deleteCookie } from "@/lib/cookies";
+import { createClientSupabaseClient } from "@/lib/supabase";
 import { setServerSession } from "@/lib/actions";
 
 export default function Auth() {
@@ -11,23 +10,18 @@ export default function Auth() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+  const [supabase, setSupabase] = useState<any>(null);
 
   useEffect(() => {
+    // 클라이언트에서만 Supabase 클라이언트 생성
+    const client = createClientSupabaseClient();
+    setSupabase(client);
+
     // 인증 상태 변경 리스너 설정
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" && session) {
-        // 세션 정보를 쿠키에 저장
-        setCookie("sb-access-token", session.access_token);
-        setCookie("sb-refresh-token", session.refresh_token);
-        setCookie("sb-user", JSON.stringify(session.user));
-      } else if (event === "SIGNED_OUT") {
-        // 로그아웃 시 쿠키 삭제
-        deleteCookie("sb-access-token");
-        deleteCookie("sb-refresh-token");
-        deleteCookie("sb-user");
-      }
+    } = client.auth.onAuthStateChange((event: string, session: any) => {
+      console.log("Auth state changed:", event, session?.user?.email);
     });
 
     // 컴포넌트 언마운트 시 리스너 정리
@@ -38,6 +32,8 @@ export default function Auth() {
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!supabase) return;
+
     try {
       setLoading(true);
 
@@ -96,6 +92,7 @@ export default function Auth() {
 
   // 현재 세션 정보 출력 (디버깅용)
   const checkSession = async () => {
+    if (!supabase) return;
     const {
       data: { session },
     } = await supabase.auth.getSession();
