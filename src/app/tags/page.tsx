@@ -3,7 +3,7 @@ import TagList from "@/components/TagList";
 import { getAllTags } from "@/lib/tags";
 
 export const metadata: Metadata = {
-  title: "태그",
+  title: "Tags | gyun-dev",
   description:
     "블로그의 모든 태그를 확인할 수 있습니다. 관심 있는 주제로 분류된 글들을 쉽게 찾아보세요.",
   keywords: ["태그", "분류", "개발", "기술", "블로그"],
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     canonical: "/tags",
   },
   openGraph: {
-    title: "태그 | gyun-dev",
+    title: "Tags | gyun-dev",
     description:
       "블로그의 모든 태그를 확인할 수 있습니다. 관심 있는 주제로 분류된 글들을 쉽게 찾아보세요.",
     url: "/tags",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "태그 | gyun-dev",
+    title: "Tags | gyun-dev",
     description: "블로그의 모든 태그를 확인할 수 있습니다.",
   },
 };

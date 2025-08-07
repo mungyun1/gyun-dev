@@ -3,7 +3,7 @@ import { getCategoriesServer } from "@/lib/categories-server";
 import CategoryList from "@/components/CategoryList";
 
 export const metadata: Metadata = {
-  title: "카테고리",
+  title: "Categories | gyun-dev",
   description:
     "블로그의 모든 카테고리를 확인할 수 있습니다. 개발, 기술, 일상 등 다양한 주제로 분류된 글들을 찾아보세요.",
   keywords: ["카테고리", "분류", "개발", "기술", "블로그"],
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     canonical: "/categories",
   },
   openGraph: {
-    title: "카테고리 | gyun-dev",
+    title: "Categories | gyun-dev",
     description:
       "블로그의 모든 카테고리를 확인할 수 있습니다. 개발, 기술, 일상 등 다양한 주제로 분류된 글들을 찾아보세요.",
     url: "/categories",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "카테고리 | gyun-dev",
+    title: "Categories | gyun-dev",
     description: "블로그의 모든 카테고리를 확인할 수 있습니다.",
   },
 };

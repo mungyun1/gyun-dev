@@ -10,7 +10,7 @@ interface Post {
 }
 
 export const metadata: Metadata = {
-  title: "검색",
+  title: "Search | gyun-dev",
   description:
     "블로그에서 원하는 글을 검색할 수 있습니다. 제목이나 내용으로 빠르게 찾아보세요.",
   keywords: ["검색", "블로그", "글 찾기"],
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     canonical: "/search",
   },
   openGraph: {
-    title: "검색 | gyun-dev",
+    title: "Search | gyun-dev",
     description:
       "블로그에서 원하는 글을 검색할 수 있습니다. 제목이나 내용으로 빠르게 찾아보세요.",
     url: "/search",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "검색 | gyun-dev",
+    title: "Search | gyun-dev",
     description: "블로그에서 원하는 글을 검색할 수 있습니다.",
   },
 };
