@@ -78,7 +78,7 @@ export async function getPosts(limit?: number): Promise<Post[]> {
     }
 
     const res = await fetch(url.toString(), {
-      cache: "no-store",
+      next: { revalidate: 3600 },
     });
 
     if (!res.ok) {

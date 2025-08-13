@@ -14,7 +14,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "";
 export async function getAllTags(): Promise<Tag[]> {
   try {
     const response = await fetch(`${API_BASE_URL}/api/tags`, {
-      cache: "no-store",
+      next: { revalidate: 21600 },
     });
     if (!response.ok) throw new Error("태그 조회 중 오류가 발생했습니다.");
     return await response.json();
@@ -34,7 +34,7 @@ export async function getPostCountByTag(tagName: string): Promise<number> {
     const response = await fetch(
       `${API_BASE_URL}/api/tags?name=${encodeURIComponent(tagName)}`,
       {
-        cache: "no-store",
+        next: { revalidate: 3600 },
       }
     );
     if (!response.ok) throw new Error("게시물 조회 중 오류가 발생했습니다.");
@@ -56,7 +56,7 @@ export async function getPostsByTag(tag: string): Promise<Post[]> {
     const response = await fetch(
       `${API_BASE_URL}/api/tags?name=${encodeURIComponent(tag)}`,
       {
-        cache: "no-store",
+        next: { revalidate: 3600 },
       }
     );
     if (!response.ok) throw new Error("게시물 조회 중 오류가 발생했습니다.");
@@ -74,7 +74,7 @@ export async function getPostsByTag(tag: string): Promise<Post[]> {
 export async function getTopTags(): Promise<Tag[]> {
   try {
     const response = await fetch(`${API_BASE_URL}/api/tags?path=top`, {
-      cache: "no-store",
+      next: { revalidate: 21600 },
     });
     if (!response.ok) throw new Error("태그 조회 중 오류가 발생했습니다.");
     return await response.json();

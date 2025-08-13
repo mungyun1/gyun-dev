@@ -41,7 +41,6 @@ export async function getCategoriesServer(): Promise<Category[]> {
       return [];
     }
 
-    // post_ids를 기반으로 posts 정보를 가져옴
     const categoriesWithPosts = await Promise.all(
       categories.map(async (category: Category) => {
         if (!category.post_ids?.length) {
@@ -98,7 +97,6 @@ export async function getCategoriesServer(): Promise<Category[]> {
     return categoriesWithPosts;
   } catch (error) {
     console.error("Error fetching categories:", error);
-    // 에러가 발생해도 빈 배열을 반환하여 페이지가 깨지지 않도록 함
     return [];
   }
 }

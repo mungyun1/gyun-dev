@@ -4,6 +4,8 @@ import Image from "next/image";
 import { createPersonSchema } from "@/utils/schema";
 import Script from "next/script";
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: "About | gyun-dev",
   description:

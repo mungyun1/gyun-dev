@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 
+export const revalidate = 86400;
+
 export default function ApiDocs() {
   useEffect(() => {
     const loadSwaggerUI = async () => {
