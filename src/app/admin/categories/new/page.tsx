@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createCategory } from "@/lib/categories";
+import BackButton from "@/components/BackButton";
 
 export default function NewCategoryPage() {
   const router = useRouter();
@@ -34,6 +35,12 @@ export default function NewCategoryPage() {
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
+      <div className="mb-6">
+        <BackButton
+          href="/admin/categories"
+          text="카테고리 목록으로 돌아가기"
+        />
+      </div>
       <h1 className="text-3xl font-bold mb-8">새 카테고리 생성</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>

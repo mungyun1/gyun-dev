@@ -2,6 +2,7 @@ import { getPosts } from "@/lib/posts";
 import Link from "next/link";
 import SearchInput from "./SearchInput";
 import { Metadata } from "next";
+import BackButton from "@/components/BackButton";
 
 interface Post {
   slug: string;
@@ -49,6 +50,9 @@ export default async function SearchPage({
 
   return (
     <div className="max-w-4xl mx-auto py-8">
+      <div className="mb-6">
+        <BackButton href="/" text="홈으로 돌아가기" />
+      </div>
       <SearchInput />
 
       <div className="space-y-6">

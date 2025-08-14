@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import PostEditor from "@/components/PostEditor";
 import { getCategoriesServer } from "@/lib/categories-server";
+import BackButton from "@/components/BackButton";
 
 export const metadata: Metadata = {
   title: "새 게시물 작성 | Gyun's Blog",
@@ -13,6 +14,9 @@ export default async function NewPostPage() {
   return (
     <div className="min-h-screen dark:bg-slate-900 py-6">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-6">
+          <BackButton href="/admin/posts" text="게시물 목록으로 돌아가기" />
+        </div>
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             새 게시물 작성

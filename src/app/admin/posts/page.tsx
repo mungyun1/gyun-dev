@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import PostList from "@/components/PostList";
 import Link from "next/link";
 import { getPosts } from "@/lib/posts";
+import BackButton from "@/components/BackButton";
 
 export const metadata: Metadata = {
   title: "Posts | Gyun's Blog",
@@ -14,6 +15,9 @@ export default async function PostsPage() {
   return (
     <div className="min-h-screen dark:bg-slate-900 py-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-6">
+          <BackButton href="/admin" text="관리자 대시보드로 돌아가기" />
+        </div>
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             게시물 목록
