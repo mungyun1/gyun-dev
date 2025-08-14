@@ -11,8 +11,9 @@ function addCorsHeaders(response: NextResponse) {
   );
   response.headers.set(
     "Access-Control-Allow-Headers",
-    "Content-Type, Authorization"
+    "Content-Type, Authorization, X-Requested-With, Accept, Origin"
   );
+  response.headers.set("Access-Control-Allow-Credentials", "true");
   return response;
 }
 
@@ -100,12 +101,6 @@ export async function POST(request: Request) {
 
 // OPTIONS 요청 처리 (preflight 요청)
 export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    },
-  });
+  const response = new NextResponse(null, { status: 200 });
+  return addCorsHeaders(response);
 }

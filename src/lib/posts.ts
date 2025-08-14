@@ -23,8 +23,10 @@ interface PostData {
 export async function createPost(data: PostData): Promise<Post> {
   const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/posts`, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      Accept: "application/json",
     },
     body: JSON.stringify(data),
   });
@@ -42,8 +44,10 @@ export async function updatePost(slug: string, data: PostData): Promise<Post> {
     `${process.env.NEXT_PUBLIC_APP_URL}/api/posts/${slug}`,
     {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(data),
     }
@@ -62,6 +66,11 @@ export async function deletePost(slug: string): Promise<void> {
     `${process.env.NEXT_PUBLIC_APP_URL}/api/posts/${slug}`,
     {
       method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
     }
   );
 
@@ -79,6 +88,11 @@ export async function getPosts(limit?: number): Promise<Post[]> {
 
     const res = await fetch(url.toString(), {
       next: { revalidate: 3600 },
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
     });
 
     if (!res.ok) {
@@ -98,6 +112,11 @@ export async function getPost(slug: string) {
       `${process.env.NEXT_PUBLIC_APP_URL}/api/posts/${slug}`,
       {
         next: { revalidate: 3600 }, // 1시간마다 재검증
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       }
     );
 

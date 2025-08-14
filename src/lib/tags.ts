@@ -15,6 +15,11 @@ export async function getAllTags(): Promise<Tag[]> {
   try {
     const response = await fetch(`${API_BASE_URL}/api/tags`, {
       next: { revalidate: 21600 },
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
     });
     if (!response.ok) throw new Error("태그 조회 중 오류가 발생했습니다.");
     return await response.json();

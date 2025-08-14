@@ -35,8 +35,10 @@ export async function createCategory(
     normalizeUrl(process.env.NEXT_PUBLIC_APP_URL || "", "/api/categories"),
     {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(data),
     }
@@ -57,6 +59,11 @@ export async function deleteCategory(categoryId: string): Promise<void> {
     ),
     {
       method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
     }
   );
 
@@ -72,6 +79,11 @@ export async function getCategories(): Promise<Category[]> {
       normalizeUrl(process.env.NEXT_PUBLIC_APP_URL || "", "/api/categories"),
       {
         cache: "no-store",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       }
     );
 
@@ -99,6 +111,11 @@ export async function getCategories(): Promise<Category[]> {
           ),
           {
             cache: "no-store",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
           }
         );
 
@@ -139,6 +156,11 @@ export async function getCategory(categoryId: string): Promise<Category> {
       ),
       {
         next: { revalidate: 3600 }, // 1시간마다 재검증
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       }
     );
 
@@ -165,6 +187,11 @@ export async function getCategory(categoryId: string): Promise<Category> {
       ),
       {
         next: { revalidate: 3600 }, // 1시간마다 재검증
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       }
     );
 
