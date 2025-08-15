@@ -4,7 +4,12 @@ import { useState, useEffect } from "react";
 import { createClientSupabaseClient } from "@/lib/supabase/client";
 import { setServerSession } from "@/lib/actions";
 
-export default function Auth() {
+interface AuthProps {
+  reason?: string;
+  redirectedFrom?: string;
+}
+
+export default function Auth({ reason, redirectedFrom }: AuthProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,6 +34,13 @@ export default function Auth() {
       subscription.unsubscribe();
     };
   }, []);
+
+  // 쿠키 만료 이유에 따른 메시지 설정
+  useEffect(() => {
+    if (reason === "expired") {
+      setMessage("세션이 만료되었습니다. 다시 로그인해주세요.");
+    }
+  }, [reason]);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -6,6 +6,15 @@ export const metadata: Metadata = {
   description: "관리자 로그인",
 };
 
-export default function LoginPage() {
-  return <Auth />;
+export default function LoginPage({
+  searchParams,
+}: {
+  searchParams: { reason?: string; redirectedFrom?: string };
+}) {
+  return (
+    <Auth
+      reason={searchParams.reason}
+      redirectedFrom={searchParams.redirectedFrom}
+    />
+  );
 }
