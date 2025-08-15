@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://gyun-dev.co.kr/api",
+      "url": "https://www.gyun-dev.co.kr/api",
       "description": "프로덕션 서버"
     },
     {
