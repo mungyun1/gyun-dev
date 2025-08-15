@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getApiUrl, getResourceApiUrl } from "@/utils/url";
 
 export interface Post {
   id: number;
@@ -21,7 +22,7 @@ interface PostData {
 }
 
 export async function createPost(data: PostData): Promise<Post> {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/posts`, {
+  const response = await fetch(getApiUrl("posts"), {
     method: "POST",
     credentials: "include",
     headers: {
@@ -40,18 +41,15 @@ export async function createPost(data: PostData): Promise<Post> {
 }
 
 export async function updatePost(slug: string, data: PostData): Promise<Post> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL}/api/posts/${slug}`,
-    {
-      method: "PUT",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(data),
-    }
-  );
+  const response = await fetch(getResourceApiUrl("posts", slug), {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(data),
+  });
 
   if (!response.ok) {
     const errorData = await response.json();
@@ -62,17 +60,14 @@ export async function updatePost(slug: string, data: PostData): Promise<Post> {
 }
 
 export async function deletePost(slug: string): Promise<void> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL}/api/posts/${slug}`,
-    {
-      method: "DELETE",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    }
-  );
+  const response = await fetch(getResourceApiUrl("posts", slug), {
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
 
   if (!response.ok) {
     throw new Error("게시물 삭제에 실패했습니다.");
@@ -81,7 +76,7 @@ export async function deletePost(slug: string): Promise<void> {
 
 export async function getPosts(limit?: number): Promise<Post[]> {
   try {
-    const url = new URL(`${process.env.NEXT_PUBLIC_APP_URL}/api/posts`);
+    const url = new URL(getApiUrl("posts"));
     if (limit) {
       url.searchParams.set("limit", limit.toString());
     }
@@ -108,17 +103,14 @@ export async function getPosts(limit?: number): Promise<Post[]> {
 
 export async function getPost(slug: string) {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/posts/${slug}`,
-      {
-        next: { revalidate: 3600 }, // 1시간마다 재검증
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }
-    );
+    const response = await fetch(getResourceApiUrl("posts", slug), {
+      next: { revalidate: 3600 }, // 1시간마다 재검증
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
 
     if (!response.ok) {
       throw new Error("Failed to fetch post");

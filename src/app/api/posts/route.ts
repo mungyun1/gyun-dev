@@ -4,7 +4,10 @@ import { cookies } from "next/headers";
 
 // CORS 헤더를 추가하는 헬퍼 함수
 function addCorsHeaders(response: NextResponse) {
-  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set(
+    "Access-Control-Allow-Origin",
+    "https://www.gyun-dev.co.kr"
+  );
   response.headers.set(
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, OPTIONS"
@@ -13,6 +16,7 @@ function addCorsHeaders(response: NextResponse) {
     "Access-Control-Allow-Headers",
     "Content-Type, Authorization"
   );
+  response.headers.set("Access-Control-Allow-Credentials", "true");
   return response;
 }
 
@@ -105,9 +109,11 @@ export async function OPTIONS() {
   return new NextResponse(null, {
     status: 200,
     headers: {
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": "https://www.gyun-dev.co.kr",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Max-Age": "86400",
     },
   });
 }
